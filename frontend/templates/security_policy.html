@@ -1,0 +1,455 @@
+{% extends "layout.html" %}
+{% block title %}Security Policy - RapidDesk AI{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ================= SECURITY POLICY CYBERPUNK ================= */
+:root {
+    --security-gradient: linear-gradient(135deg, #00d4aa 0%, #a461e2 50%, #4cc9f0 100%);
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --shield-glow: 0 0 35px rgba(0, 212, 170, 0.5);
+    --alert-glow: 0 0 25px rgba(164, 97, 226, 0.4);
+}
+
+.security-hero {
+    min-height: 70vh;
+    background: linear-gradient(145deg, rgba(15,12,29,0.97), rgba(48,43,99,0.92));
+    border-radius: 0 0 40px 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.security-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(0,212,170,0.25) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(164,97,226,0.25) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(76,201,240,0.15) 0%, transparent 50%);
+    animation: security-pulse 6s ease-in-out infinite;
+}
+
+@keyframes security-pulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+
+.security-main {
+    background: var(--glass-bg);
+    backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border);
+    border-radius: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.security-main::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+    transition: left 0.7s;
+}
+
+.security-main:hover::before { left: 100%; }
+
+.security-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 2.5rem;
+    height: 100%;
+    transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    position: relative;
+}
+
+.security-card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 35px 70px rgba(0,0,0,0.5), var(--shield-glow);
+}
+
+.security-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 1.8rem;
+    border: 2px solid rgba(255,255,255,0.25);
+    transition: all 0.4s ease;
+    background: rgba(255,255,255,0.08);
+}
+
+.security-card:hover .security-icon {
+    transform: scale(1.15) rotate(360deg);
+    background: var(--security-gradient);
+    border-color: transparent;
+    box-shadow: var(--shield-glow);
+    color: white;
+}
+
+.bounty-badge {
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 10px 30px rgba(255,107,107,0.4);
+    animation: bounty-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes bounty-glow {
+    from { box-shadow: 0 10px 30px rgba(255,107,107,0.4); }
+    to { box-shadow: 0 10px 40px rgba(255,107,107,0.6); }
+}
+
+.tech-stack {
+    background: rgba(15,12,41,0.7);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 24px;
+    padding: 3rem;
+}
+
+.stack-item {
+    padding: 1.5rem;
+    border-radius: 20px;
+    border: 2px solid rgba(255,255,255,0.15);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+.stack-item:hover {
+    transform: translateY(-8px);
+    border-color: var(--security-gradient);
+    background: rgba(255,255,255,0.08);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.audit-badge {
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: 2px solid rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.audit-badge:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+@media (max-width: 768px) {
+    .security-hero { min-height: 60vh; }
+    .security-card { padding: 2rem; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= SECURITY HERO ================= -->
+<section class="security-hero d-flex align-items-center position-relative">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8 text-center">
+                <div class="security-main p-6 position-relative">
+                    <div class="bounty-badge mb-5 d-inline-block">
+                        <i class="fas fa-bug"></i>
+                        $500K Bug Bounty
+                    </div>
+                    <h1 class="display-3 fw-bold mb-4" style="background: var(--security-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                        Zero Trust Security
+                    </h1>
+                    <p class="lead mb-5" style="color: rgba(255,255,255,0.9); font-size: 1.4rem; max-width: 700px; margin: 0 auto;">
+                        Military-grade encryption • Continuous threat monitoring • World's best bug bounty program
+                    </p>
+                    
+                    <!-- Security Metrics -->
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="h5 fw-bold mb-2" style="color: rgba(255,255,255,0.8);">Vulnerabilities Fixed</div>
+                            <div class="display-4 fw-bold" style="color: #00d4aa;">0</div>
+                            <small style="color: rgba(255,255,255,0.6);">This year</small>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="h5 fw-bold mb-2" style="color: rgba(255,255,255,0.8);">Penetration Tests</div>
+                            <div class="display-4 fw-bold" style="color: #4cc9f0;">47</div>
+                            <small style="color: rgba(255,255,255,0.6);">Annual</small>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="h5 fw-bold mb-2" style="color: rgba(255,255,255,0.8);">SOC 2 Audits</div>
+                            <div class="display-4 fw-bold" style="color: #a461e2;">Type II ✓</div>
+                            <small style="color: rgba(255,255,255,0.6);">Certified</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= CORE SECURITY PRINCIPLES ================= -->
+<section class="container py-7">
+    <div class="row g-4">
+        
+        <!-- ZERO TRUST -->
+        <div class="col-lg-4 col-md-6">
+            <div class="security-card h-100 text-center">
+                <div class="security-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h4 class="fw-bold mb-4" style="color: rgba(255,255,255,0.95);">Zero Trust</h4>
+                <p style="color: rgba(255,255,255,0.8); line-height: 1.6;">
+                    Continuous verification, never trust, always authenticate. 
+                    Least privilege access enforced everywhere.
+                </p>
+                <div class="mt-4">
+                    <span class="badge bg-success fw-bold px-3 py-2">Implemented</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ENCRYPTION EVERYWHERE -->
+        <div class="col-lg-4 col-md-6">
+            <div class="security-card h-100 text-center">
+                <div class="security-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h4 class="fw-bold mb-4" style="color: rgba(255,255,255,0.95);">Encryption Everywhere</h4>
+                <p style="color: rgba(255,255,255,0.8); line-height: 1.6;">
+                    AES-256 at rest, TLS 1.3 in transit, end-to-end encryption 
+                    for all ticket content and metadata.
+                </p>
+                <div class="mt-4">
+                    <span class="badge bg-primary fw-bold px-3 py-2">Military Grade</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTINUOUS MONITORING -->
+        <div class="col-lg-4 col-md-6">
+            <div class="security-card h-100 text-center">
+                <div class="security-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <h4 class="fw-bold mb-4" style="color: rgba(255,255,255,0.95);">24/7 Monitoring</h4>
+                <p style="color: rgba(255,255,255,0.8); line-height: 1.6;">
+                    Real-time threat detection with AI-powered anomaly detection 
+                    across entire infrastructure.
+                </p>
+                <div class="mt-4">
+                    <span class="badge bg-info fw-bold px-3 py-2">AI Powered</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= TECHNOLOGY STACK ================= -->
+<section class="container py-7">
+    <div class="tech-stack">
+        <div class="text-center mb-6">
+            <h2 class="display-5 fw-bold mb-4" style="background: var(--security-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                Battle-Tested Infrastructure
+            </h2>
+            <p class="lead mb-0" style="color: rgba(255,255,255,0.85); max-width: 600px; margin: 0 auto;">
+                Enterprise-grade security powered by industry leaders
+            </p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="stack-item text-center">
+                    <i class="fas fa-cloud fa-3x mb-3" style="color: #00d4aa;"></i>
+                    <h5 class="fw-bold mb-2" style="color: rgba(255,255,255,0.95);">Kubernetes</h5>
+                    <p style="color: rgba(255,255,255,0.7);">Zero-trust clusters with network policies</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stack-item text-center">
+                    <i class="fas fa-firewall fa-3x mb-3" style="color: #ff6b6b;"></i>
+                    <h5 class="fw-bold mb-2" style="color: rgba(255,255,255,0.95);">Cloudflare</h5>
+                    <p style="color: rgba(255,255,255,0.7);">WAF + DDoS protection enterprise tier</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stack-item text-center">
+                    <i class="fas fa-key fa-3x mb-3" style="color: #ffd93d;"></i>
+                    <h5 class="fw-bold mb-2" style="color: rgba(255,255,255,0.95);">HashiCorp Vault</h5>
+                    <p style="color: rgba(255,255,255,0.7);">Secrets management HSM protected</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stack-item text-center">
+                    <i class="fas fa-bug fa-3x mb-3" style="color: #a461e2;"></i>
+                    <h5 class="fw-bold mb-2" style="color: rgba(255,255,255,0.95);">Bug Bounty</h5>
+                    <p style="color: rgba(255,255,255,0.7);">HackerOne $500K program</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= AUDITS & CERTIFICATIONS ================= -->
+<section class="container py-7">
+    <div class="row g-4 justify-content-center">
+        <div class="col-lg-3 col-md-6">
+            <div class="security-card text-center">
+                <div class="security-icon mb-4">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <h5 class="fw-bold mb-4" style="color: rgba(255,255,255,0.95);">SOC 2 Type II</h5>
+                <div>
+                    <span class="audit-badge soc2">
+                        <i class="fas fa-check-circle"></i>
+                        Certified
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="security-card text-center">
+                <div class="security-icon mb-4">
+                    <i class="fas fa-euro-sign"></i>
+                </div>
+                <h5 class="fw-bold mb-4" style="color: rgba(255,255,255,0.95);">GDPR</h5>
+                <div>
+                    <span class="audit-badge gdpr">
+                        <i class="fas fa-check-circle"></i>
+                        Compliant
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="security-card text-center">
+                <div class="security-icon mb-4">
+                    <i class="fas fa-pen"></i>
+                </div>
+                <h5 class="fw-bold mb-4" style="color: rgba(255,255,255,0.95);">Penetration Tests</h5>
+                <div class="display-6 fw-bold" style="color: #00d4aa;">47/year</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="security-card text-center">
+                <div class="security-icon mb-4">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h5 class="fw-bold mb-4" style="color: rgba(255,255,255,0.95);">Incident Response</h5>
+                <div class="display-6 fw-bold" style="color: #4cc9f0;">&lt;15min</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= BUG BOUNTY & REPORTING ================= -->
+<section class="container py-7">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 text-center">
+            <div class="security-card p-6">
+                <div class="security-icon mb-5 mx-auto" style="width: 120px; height: 120px; font-size: 3rem;">
+                    <i class="fas fa-bug"></i>
+                </div>
+                <h3 class="display-5 fw-bold mb-4" style="background: var(--security-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    $500K Bug Bounty Program
+                </h3>
+                <p class="lead mb-5" style="color: rgba(255,255,255,0.85); max-width: 700px; margin: 0 auto;">
+                    Help us stay secure. Critical vulnerabilities rewarded up to $100K USD.
+                </p>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <a href="#" class="btn btn-lg w-100 text-white fw-bold rounded-pill p-4" 
+                           style="background: linear-gradient(135deg, #ff6b6b, #ff8e8e);">
+                            <i class="fas fa-bug me-2"></i>
+                            Report Vulnerability
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="#" class="btn btn-lg w-100 fw-bold rounded-pill p-4 border border-white text-white">
+                            <i class="fas fa-trophy me-2"></i>
+                            Bounty Rules
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="mailto:security@rapiddesk.ai" class="btn btn-lg w-100 text-white fw-bold rounded-pill p-4" 
+                           style="background: var(--security-gradient);">
+                            <i class="fas fa-envelope me-2"></i>
+                            security@rapiddesk.ai
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Smooth hover animations
+document.querySelectorAll('.security-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-12px) scale(1.02)';
+    });
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0) scale(1)';
+    });
+});
+
+// Stack item stagger animation
+document.querySelectorAll('.stack-item').forEach((item, index) => {
+    item.style.opacity = '0';
+    item.style.transform = 'translateY(30px)';
+    setTimeout(() => {
+        item.style.transition = 'all 0.6s cubic-bezier(0.34,1.56,0.64,1)';
+        item.style.opacity = '1';
+        item.style.transform = 'translateY(0)';
+    }, index * 150);
+});
+
+// Live metrics counter
+function animateCounters() {
+    const counters = document.querySelectorAll('.display-4, .display-6');
+    counters.forEach(counter => {
+        const target = parseInt(counter.textContent);
+        const duration = 2000;
+        const step = target / (duration / 16);
+        let current = 0;
+        const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+                counter.textContent = target;
+                clearInterval(timer);
+            } else {
+                counter.textContent = Math.floor(current);
+            }
+        }, 16);
+    });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', animateCounters);
+} else {
+    animateCounters();
+}
+</script>
+{% endblock %}

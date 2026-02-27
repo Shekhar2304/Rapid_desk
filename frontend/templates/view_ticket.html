@@ -1,0 +1,427 @@
+{% extends "layout.html" %}
+{% block title %}Ticket {{ ticket.ticket_id }} - AI Ticket System{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Glassmorphism Theme MATCHING YOUR ORIGINAL DARK THEME - High Visibility Text */
+.ticket-glass {
+    background: rgba(20, 20, 35, 0.85) !important;  /* Your original dark glass */
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.25) !important;
+    border-radius: 20px;
+    padding: 30px;
+    color: #ffffff !important;  /* Bright white text */
+}
+
+.ticket-info-box {
+    background: rgba(0, 0, 0, 0.4) !important;  /* Your original dark box */
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 12px;
+    padding: 20px;
+    color: #e9ecef !important;  /* Very light gray text */
+}
+
+/* Your Original Timeline - Enhanced Visibility */
+.timeline { 
+    border-left: 3px solid rgba(76, 201, 240, 0.6) !important; 
+    padding-left: 25px; 
+    margin-left: 15px; 
+}
+.timeline-item { 
+    position: relative; 
+    margin-bottom: 25px; 
+}
+.timeline-item::before {
+    content: ''; 
+    position: absolute; 
+    left: -31px; 
+    top: 0; 
+    width: 14px !important; 
+    height: 14px !important;
+    border-radius: 50%; 
+    background: #4cc9f0 !important; 
+    box-shadow: 0 0 15px #4cc9f0 !important;
+    border: 2px solid rgba(255,255,255,0.8);
+}
+
+/* High Visibility Form Controls ON DARK BG */
+.form-select-dark {
+    background-color: rgba(40, 40, 60, 0.9) !important; 
+    color: #ffffff !important; 
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    font-weight: 600;
+}
+.form-select-dark option { 
+    color: #212529 !important; 
+    background: #ffffff !important;
+}
+.form-select-dark:focus {
+    border-color: #4cc9f0 !important;
+    box-shadow: 0 0 15px rgba(76, 201, 240, 0.5) !important;
+}
+
+/* Your Original Vibrant Badges - MAX Visibility */
+.priority-high { 
+    background: linear-gradient(135deg, #dc3545, #c82333) !important; 
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+.priority-medium { 
+    background: linear-gradient(135deg, #ffc107, #e0a800) !important; 
+    color: #212529 !important;
+    font-weight: 800 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+}
+.priority-low { 
+    background: linear-gradient(135deg, #28a745, #1e7e34) !important; 
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+}
+.status-open { 
+    background: linear-gradient(135deg, #17a2b8, #138496) !important; 
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+.status-in_progress { 
+    background: linear-gradient(135deg, #ffc107, #e0a800) !important; 
+    color: #212529 !important;
+    font-weight: 800 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+.status-resolved { 
+    background: linear-gradient(135deg, #28a745, #1e7e34) !important; 
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+.status-closed { 
+    background: linear-gradient(135deg, #6c757d, #545b62) !important; 
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Your Pulsing Time Badge - Ultra Visible */
+.current-time-badge {
+    background: linear-gradient(135deg, #4cc9f0, #a461e2) !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 15px rgba(76, 201, 240, 0.6);
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(76, 201, 240, 0.8); }
+    70% { box-shadow: 0 0 0 15px rgba(76, 201, 240, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(76, 201, 240, 0); }
+}
+
+/* PERFECT TEXT VISIBILITY ON DARK THEME */
+.text-white { color: #ffffff !important; font-weight: 500 !important; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+.text-white-50 { color: #e9ecef !important; font-weight: 500 !important; }
+.text-muted { color: #adb5bd !important; font-weight: 500 !important; }
+small { color: #ced4da !important; font-weight: 500 !important; text-shadow: none; }
+
+/* Button Perfection */
+.btn { 
+    border: 2px solid !important; 
+    font-weight: 700 !important; 
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    border-radius: 12px;
+}
+.btn-primary { 
+    background: linear-gradient(135deg, #4cc9f0, #007acc) !important; 
+    border-color: rgba(255,255,255,0.3) !important;
+    color: #ffffff !important;
+}
+.btn-primary:hover { 
+    background: linear-gradient(135deg, #007acc, #4cc9f0) !important;
+    box-shadow: 0 6px 20px rgba(76, 201, 240, 0.4);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row g-4">
+        <div class="col-md-8">
+            <!-- MAIN TICKET CARD -->
+            <div class="ticket-glass mb-4">
+                <div class="d-flex justify-content-between align-items-center border-bottom border-secondary pb-3 mb-4">
+                    <h3 class="mb-0 fw-bold text-white">
+                        <i class="fas fa-ticket-alt text-info me-2"></i>{{ ticket.ticket_id }}
+                    </h3>
+                    
+                    <!-- Show BOTH created_at AND current view time -->
+                    <div class="d-flex flex-column align-items-end">
+                        <span class="badge bg-primary px-3 py-2 fs-6 fw-bold mb-1" style="background: linear-gradient(135deg, #a461e2, #4cc9f0); text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
+                            Created: {{ ticket.created_at.strftime('%Y-%m-%d %H:%M:%S IST') if ticket.created_at else 'Just now' }}
+                        </span>
+                        {% if current_view_time %}
+                        <span class="badge current-time-badge px-3 py-1 fs-6 fw-bold">
+                            <i class="fas fa-clock me-1"></i>Viewed: {{ current_view_time }}
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <h4 class="mb-4 text-white fw-bold">{{ ticket.title }}</h4>
+                
+                <!-- TICKET DESCRIPTION -->
+                <div class="ticket-info-box mb-4">
+                    <h6 class="text-white-50 text-uppercase fw-bold mb-3">Description</h6>
+                    <p class="mb-0 text-white" style="white-space: pre-wrap; line-height: 1.6; font-size: 1.1rem;">
+                        {{ ticket.description or 'No description provided.' }}
+                    </p>
+                </div>
+                
+                <!-- QUICK INFO ROW -->
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="ticket-info-box text-center h-100">
+                            <h6 class="text-white-50 text-uppercase small mb-3">Category</h6>
+                            <span class="badge bg-secondary bg-opacity-75 fs-6 px-3 py-2 rounded-pill w-100 border border-secondary">
+                                {{ ticket.category|title }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="ticket-info-box text-center h-100">
+                            <h6 class="text-white-50 text-uppercase small mb-3">Priority</h6>
+                            {% set t_pri = ticket.priority|lower|trim %}
+                            {% if t_pri == 'high' %}
+                                <span class="badge priority-high fs-6 px-3 py-2 rounded-pill w-100 shadow-sm text-white">HIGH</span>
+                            {% elif t_pri == 'medium' %}
+                                <span class="badge priority-medium fs-6 px-3 py-2 rounded-pill w-100 shadow-sm">MEDIUM</span>
+                            {% else %}
+                                <span class="badge priority-low fs-6 px-3 py-2 rounded-pill w-100 shadow-sm text-white">LOW</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="ticket-info-box text-center h-100">
+                            <h6 class="text-white-50 text-uppercase small mb-3">Status</h6>
+                            {% set t_status = ticket.status|lower|trim %}
+                            {% if t_status == 'open' %}
+                                <span class="badge status-open fs-6 px-3 py-2 rounded-pill w-100 shadow-sm text-white">OPEN</span>
+                            {% elif t_status == 'in_progress' %}
+                                <span class="badge status-in_progress fs-6 px-3 py-2 rounded-pill w-100 shadow-sm">IN PROGRESS</span>
+                            {% elif t_status == 'resolved' %}
+                                <span class="badge status-resolved fs-6 px-3 py-2 rounded-pill w-100 shadow-sm text-white">RESOLVED</span>
+                            {% elif t_status == 'closed' %}
+                                <span class="badge status-closed fs-6 px-3 py-2 rounded-pill w-100 shadow-sm text-white">CLOSED</span>
+                            {% else %}
+                                <span class="badge bg-light text-dark fs-6 px-3 py-2 rounded-pill w-100 shadow-sm">{{ ticket.status|title }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- TICKET HISTORY -->
+            <div class="ticket-glass">
+                <h5 class="fw-bold mb-4 text-white">
+                    <i class="fas fa-history text-secondary me-2"></i>Ticket History
+                </h5>
+                {% if ticket.history %}
+                <div class="timeline">
+                    {% for history in ticket.history|sort(attribute='created_at', reverse=true) %}
+                    <div class="timeline-item">
+                        <div class="ticket-info-box">
+                            <h6 class="fw-bold text-info mb-1">{{ history.action }}</h6>
+                            <p class="mb-2 text-white">{{ history.details }}</p>
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-1"></i>
+                                {{ history.created_at.strftime('%Y-%m-%d %H:%M:%S IST') if history.created_at else 'Just now' }} 
+                                by <strong class="text-white">{{ history.changed_by or 'System' }}</strong>
+                            </small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-4 text-white-50">
+                    <i class="fas fa-clipboard-list fa-3x mb-3 opacity-50"></i>
+                    <p class="mb-0">No history recorded yet.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- SIDEBAR -->
+        <div class="col-md-4">
+            <!-- AI ANALYSIS -->
+            <div class="ticket-glass mb-4" style="border-top: 4px solid #a461e2;">
+                <h5 class="fw-bold mb-4 text-white">
+                    <i class="fas fa-robot text-primary me-2"></i>AI Analysis
+                </h5>
+                
+                <!-- AI Confidence Progress -->
+                <div class="mb-3">
+                    <label class="text-white-50 small text-uppercase fw-bold">Confidence Score</label>
+                    <div class="progress mt-2" style="height: 12px; background: rgba(255,255,255,0.1);">
+                        <div class="progress-bar bg-success" style="width: {{ ((ticket.ai_confidence or 0) * 100)|round(1) }}%">
+                            <span class="visually-hidden">{{ ((ticket.ai_confidence or 0) * 100)|round(1) }}%</span>
+                        </div>
+                    </div>
+                    <div class="text-end mt-1">
+                        <small class="text-success fw-bold">{{ ((ticket.ai_confidence or 0) * 100)|round(1) }}% Match</small>
+                    </div>
+                </div>
+                
+                {% if ticket.ai_insights %}
+                <div class="mt-3 pt-3 border-top border-secondary">
+                    <h6 class="text-white-50 small text-uppercase fw-bold mb-2">AI Insights</h6>
+                    <div class="bg-black bg-opacity-30 p-3 rounded" style="font-size: 0.9rem; line-height: 1.5; color: #e9ecef !important;">
+                        {{ ticket.ai_insights }}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Estimated Resolution -->
+                <div class="mt-4 pt-3 border-top border-secondary">
+                    <h6 class="text-white-50 small text-uppercase fw-bold mb-2">Estimated Resolution</h6>
+                    <div class="fs-5 fw-bold text-warning">
+                        <i class="fas fa-hourglass-half me-2"></i>
+                        {{ get_estimated_resolution(ticket.category, ticket.priority) if get_estimated_resolution else '24-48 hours' }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- QUICK ACTIONS -->
+            <div class="ticket-glass" style="border-top: 4px solid #ffc107;">
+                <h5 class="fw-bold mb-4 text-white">
+                    <i class="fas fa-bolt text-warning me-2"></i>Quick Actions
+                </h5>
+                
+                <div class="d-grid gap-3">
+                    {% if ticket.status not in ['resolved', 'closed'] %}
+                    <button type="button" class="btn btn-primary py-2 fw-bold fs-6" data-bs-toggle="modal" data-bs-target="#updateTicketModal">
+                        <i class="fas fa-comment-dots me-2"></i>Add Comment / Update
+                    </button>
+                    {% endif %}
+
+                    <form action="{{ url_for('ticket_action', ticket_id=ticket.ticket_id) }}" method="POST" class="m-0">
+                        <input type="hidden" name="action" value="resolve">
+                        <button type="submit" class="btn btn-outline-success w-100 py-2 fw-bold fs-6" 
+                                {% if ticket.status in ['resolved', 'closed'] %}disabled{% endif %}>
+                            <i class="fas fa-check-circle me-2"></i>Mark as Resolved
+                        </button>
+                    </form>
+
+                    {% if ticket.status != 'closed' %}
+                    <form action="{{ url_for('ticket_action', ticket_id=ticket.ticket_id) }}" method="POST" class="m-0">
+                        <input type="hidden" name="action" value="change_priority">
+                        <div class="input-group">
+                            <select name="new_priority" class="form-select form-select-dark" required>
+                                <option value="" disabled selected>Priority...</option>
+                                <option value="low" {% if ticket.priority == 'low' %}selected{% endif %}>Low</option>
+                                <option value="medium" {% if ticket.priority == 'medium' %}selected{% endif %}>Medium</option>
+                                <option value="high" {% if ticket.priority == 'high' %}selected{% endif %}>High</option>
+                            </select>
+                            <button type="submit" class="btn btn-warning text-dark fw-bold">
+                                <i class="fas fa-arrow-up"></i>
+                            </button>
+                        </div>
+                    </form>
+                    {% endif %}
+
+                    <form action="{{ url_for('ticket_action', ticket_id=ticket.ticket_id) }}" method="POST" class="m-0">
+                        <input type="hidden" name="action" value="close">
+                        <button type="submit" class="btn btn-outline-danger w-100 py-2 fw-bold fs-6" 
+                                {% if ticket.status == 'closed' %}disabled{% endif %}>
+                            <i class="fas fa-times-circle me-2"></i>Close Ticket
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- BACK BUTTON -->
+            <div class="mt-4 text-center">
+                {% if current_user.role == 'admin' %}
+                    <a href="{{ url_for('admin') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 w-100">
+                        <i class="fas fa-arrow-left me-2"></i>Admin Dashboard
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('ticket_history') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 w-100">
+                        <i class="fas fa-arrow-left me-2"></i>Back to History
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- UPDATE MODAL - Dark Theme -->
+<div class="modal fade" id="updateTicketModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white border-secondary shadow-lg">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold">
+                    <i class="fas fa-edit text-primary me-2"></i>Add Update to Ticket
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('ticket_action', ticket_id=ticket.ticket_id) }}" method="POST">
+                <div class="modal-body p-4">
+                    <input type="hidden" name="action" value="update">
+                    <div class="mb-3">
+                        <label for="additional_info" class="form-label text-white-50 small text-uppercase fw-bold">New Information</label>
+                        <textarea class="form-control bg-transparent text-white border-secondary" id="additional_info" name="additional_info" rows="5" 
+                                  placeholder="Type your updates, notes, or additional details here..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary px-4 fw-bold">Save Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-resize textarea
+    const textarea = document.getElementById('additional_info');
+    if (textarea) {
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+    }
+
+    // Live IST clock
+    function updateLiveClock() {
+        const now = new Date();
+        const istTime = new Date(now.toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}));
+        const timeString = istTime.toLocaleString('en-IN', {
+            timeZone: 'Asia/Kolkata',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        }).replace(',', '') + ' IST';
+        
+        document.querySelectorAll('.live-clock').forEach(el => {
+            el.textContent = timeString;
+        });
+    }
+    
+    updateLiveClock();
+    setInterval(updateLiveClock, 1000);
+});
+</script>
+{% endblock %}

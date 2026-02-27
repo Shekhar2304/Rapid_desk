@@ -1,0 +1,449 @@
+{% extends "layout.html" %}
+{% block title %}Documentation - RapidDesk AI{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ================= RAPIDDESK DOCUMENTATION ================= */
+:root {
+    --doc-primary: linear-gradient(135deg, #a461e2 0%, #4cc9f0 50%, #00d4aa 100%);
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --neon-glow: 0 0 25px rgba(164, 97, 226, 0.4);
+    --text-glow: rgba(255, 255, 255, 0.95);
+}
+
+* { box-sizing: border-box; }
+
+.docs-hero {
+    min-height: 70vh;
+    background: linear-gradient(145deg, rgba(15,12,29,0.95), rgba(48,43,99,0.9));
+    position: relative;
+    border-radius: 0 0 40px 40px;
+}
+
+.docs-grid {
+    background: rgba(15,12,41,0.6);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 3rem;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.doc-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    height: 100%;
+    text-decoration: none;
+    color: var(--text-glow);
+    position: relative;
+    overflow: hidden;
+}
+
+.doc-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.6s;
+}
+
+.doc-card:hover::before { left: 100%; }
+.doc-card:hover {
+    transform: translateY(-12px) scale(1.02);
+    border-color: transparent;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4), var(--neon-glow);
+    background: rgba(255,255,255,0.12);
+}
+
+.doc-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.doc-card:hover .doc-icon {
+    transform: scale(1.1) rotate(5deg);
+    background: var(--doc-primary);
+    box-shadow: var(--neon-glow);
+}
+
+.doc-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+    background: var(--doc-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.doc-desc {
+    color: rgba(255,255,255,0.7);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.category-badge {
+    background: var(--doc-primary);
+    padding: 0.5rem 1.2rem;
+    border-radius: 25px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: white;
+}
+
+.stats-row {
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(30px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 4rem;
+}
+
+.search-container {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50px;
+    padding: 0.5rem;
+}
+
+.search-input:focus {
+    box-shadow: 0 0 0 0.3rem rgba(164,97,226,0.25);
+    border-color: transparent;
+}
+
+.no-results {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 3rem;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .docs-grid { padding: 1.5rem; margin-top: 2rem; }
+    .doc-card { padding: 2rem 1.5rem; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO SECTION ================= -->
+<section class="docs-hero d-flex align-items-center position-relative overflow-hidden">
+    <div class="container position-relative z-index-1">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <span class="category-badge mb-4 d-inline-block">RapidDesk AI Documentation</span>
+                <h1 class="display-2 fw-bold mb-4" style="background: var(--doc-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Complete Developer<br>Documentation
+                </h1>
+                <p class="lead mb-5" style="color: rgba(255,255,255,0.85); font-size: 1.4rem; max-width: 600px; margin: 0 auto;">
+                    Everything you need to integrate, deploy, and master AI-powered ticket automation
+                </p>
+                <div class="d-flex flex-wrap gap-3 justify-content-center">
+                    <a href="#quickstart" class="btn btn-lg px-5 py-3 fw-bold text-white rounded-pill" 
+                       style="background: var(--doc-primary);">
+                        <i class="fas fa-rocket me-2"></i>Quick Start
+                    </a>
+                    <a href="#guides" class="btn btn-lg px-5 py-3 fw-bold border border-white text-white rounded-pill">
+                        API Reference
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= QUICK ACCESS STATS ================= -->
+<section class="container py-5">
+    <div class="row text-center stats-row">
+        <div class="col-md-3">
+            <h2 class="display-5 fw-bold mb-2" style="background: var(--doc-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">5 min</h2>
+            <p class="mb-0" style="color: rgba(255,255,255,0.8);">Setup Time</p>
+        </div>
+        <div class="col-md-3">
+            <h2 class="display-5 fw-bold mb-2" style="background: var(--doc-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">98%</h2>
+            <p class="mb-0" style="color: rgba(255,255,255,0.8);">Accuracy</p>
+        </div>
+        <div class="col-md-3">
+            <h2 class="display-5 fw-bold mb-2" style="background: var(--doc-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">10M+</h2>
+            <p class="mb-0" style="color: rgba(255,255,255,0.8);">Tickets Processed</p>
+        </div>
+        <div class="col-md-3">
+            <h2 class="display-5 fw-bold mb-2" style="background: var(--doc-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">24/7</h2>
+            <p class="mb-0" style="color: rgba(255,255,255,0.8);">Support</p>
+        </div>
+    </div>
+</section>
+
+<!-- ================= SEARCH BAR ================= -->
+<section class="container py-5" id="search-section">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-8">
+            <div class="search-container">
+                <div class="input-group input-group-lg">
+                    <span class="input-group-text bg-transparent border-0 px-4" style="color: rgba(255,255,255,0.8);">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" class="form-control bg-transparent border-0 search-input px-4 text-white" 
+                           id="docSearch" placeholder="Search documentation... (⌘+K)" autocomplete="off"
+                           style="font-size: 1.1rem; color: white;">
+                    <button class="btn bg-transparent border-0 px-4" type="button" style="color: rgba(255,255,255,0.8);">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= BENTO GRID DOCUMENTATION ================= -->
+<section class="container-fluid py-6 px-lg-4" id="quickstart">
+    <div class="docs-grid mx-auto" style="max-width: 1400px;">
+        <div class="row g-4" id="docGrid">
+            
+            <!-- QUICK START -->
+            <div class="col-xl-3 col-lg-4 col-md-6" data-tags="quickstart,beginner,setup,install">
+                <a href="#" class="doc-card h-100" data-title="Quick Start" data-desc="5-minute setup guide with code samples">
+                    <div class="doc-icon">
+                        <i class="fas fa-rocket" style="color: #a461e2;"></i>
+                    </div>
+                    <h3 class="doc-title">Quick Start</h3>
+                    <p class="doc-desc">5-minute setup guide with code samples</p>
+                    <div class="mt-4">
+                        <span class="category-badge">Beginner</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- API REFERENCE -->
+            <div class="col-xl-3 col-lg-4 col-md-6" data-tags="api,reference,developer,rest,websocket">
+                <a href="#" class="doc-card h-100" data-title="API Reference" data-desc="Complete REST + WebSocket API documentation">
+                    <div class="doc-icon">
+                        <i class="fas fa-code" style="color: #4cc9f0;"></i>
+                    </div>
+                    <h3 class="doc-title">API Reference</h3>
+                    <p class="doc-desc">Complete REST + WebSocket API documentation</p>
+                    <div class="mt-4">
+                        <span class="category-badge">Developer</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- INTEGRATIONS -->
+            <div class="col-xl-3 col-lg-4 col-md-6" data-tags="integration,slack,zendesk,intercom,zapier">
+                <a href="#" class="doc-card h-100" data-title="Integrations" data-desc="Slack, Zendesk, Intercom, Zapier">
+                    <div class="doc-icon">
+                        <i class="fas fa-plug" style="color: #00d4aa;"></i>
+                    </div>
+                    <h3 class="doc-title">Integrations</h3>
+                    <p class="doc-desc">Slack, Zendesk, Intercom, Zapier</p>
+                    <div class="mt-4">
+                        <span class="category-badge">Integration</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- DEPLOYMENT -->
+            <div class="col-xl-3 col-lg-4 col-md-6" data-tags="deployment,docker,kubernetes,cloud,production">
+                <a href="#" class="doc-card h-100" data-title="Deployment" data-desc="Docker, Kubernetes, Cloud setup">
+                    <div class="doc-icon">
+                        <i class="fas fa-cloud" style="color: #ff6b6b;"></i>
+                    </div>
+                    <h3 class="doc-title">Deployment</h3>
+                    <p class="doc-desc">Docker, Kubernetes, Cloud setup</p>
+                    <div class="mt-4">
+                        <span class="category-badge">Production</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- CUSTOM MODELS -->
+            <div class="col-xl-3 col-lg-4 col-md-6" data-tags="custom,models,fine-tune,bert,llm">
+                <a href="#" class="doc-card h-100" data-title="Custom Models" data-desc="Fine-tune BERT/LLM on your data">
+                    <div class="doc-icon">
+                        <i class="fas fa-brain" style="color: #ffd93d;"></i>
+                    </div>
+                    <h3 class="doc-title">Custom Models</h3>
+                    <p class="doc-desc">Fine-tune BERT/LLM on your data</p>
+                    <div class="mt-4">
+                        <span class="category-badge">Advanced</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- MONITORING -->
+            <div class="col-xl-3 col-lg-4 col-md-6" data-tags="monitoring,dashboard,alerts,metrics">
+                <a href="#" class="doc-card h-100" data-title="Monitoring" data-desc="Performance dashboards & alerts">
+                    <div class="doc-icon">
+                        <i class="fas fa-chart-line" style="color: #6c5ce7;"></i>
+                    </div>
+                    <h3 class="doc-title">Monitoring</h3>
+                    <p class="doc-desc">Performance dashboards & alerts</p>
+                    <div class="mt-4">
+                        <span class="category-badge">Observability</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- SECURITY -->
+            <div class="col-xl-3 col-lg-4 col-md-6" data-tags="security,soc2,gdpr,compliance,enterprise">
+                <a href="#" class="doc-card h-100" data-title="Security" data-desc="SOC2, GDPR, Enterprise compliance">
+                    <div class="doc-icon">
+                        <i class="fas fa-shield-alt" style="color: #00b894;"></i>
+                    </div>
+                    <h3 class="doc-title">Security</h3>
+                    <p class="doc-desc">SOC2, GDPR, Enterprise compliance</p>
+                    <div class="mt-4">
+                        <span class="category-badge">Enterprise</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- TROUBLESHOOTING -->
+            <div class="col-xl-3 col-lg-4 col-md-6" data-tags="troubleshooting,error,debug,support">
+                <a href="#" class="doc-card h-100" data-title="Troubleshooting" data-desc="Common issues & solutions">
+                    <div class="doc-icon">
+                        <i class="fas fa-tools" style="color: #fd79a8;"></i>
+                    </div>
+                    <h3 class="doc-title">Troubleshooting</h3>
+                    <p class="doc-desc">Common issues & solutions</p>
+                    <div class="mt-4">
+                        <span class="category-badge">Support</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- NO RESULTS MESSAGE -->
+        <div id="noResults" class="row" style="display: none;">
+            <div class="col-12">
+                <div class="no-results">
+                    <i class="fas fa-search fa-3x mb-4" style="color: rgba(255,255,255,0.3);"></i>
+                    <h3 class="mb-3" style="color: rgba(255,255,255,0.6);">No results found</h3>
+                    <p style="color: rgba(255,255,255,0.4);">Try searching for: Quick Start, API, Integration, Deployment, Security</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// 🔥 PRODUCTION-GRADE SEARCH FUNCTIONALITY
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('docSearch');
+    const docGrid = document.getElementById('docGrid');
+    const docCards = document.querySelectorAll('.doc-card');
+    const noResults = document.getElementById('noResults');
+    let searchTimeout;
+
+    // Real-time search with debounce
+    searchInput.addEventListener('input', function(e) {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            const query = e.target.value.toLowerCase().trim();
+            filterDocs(query);
+        }, 200);
+    });
+
+    // ⌘+K / Ctrl+K global search
+    document.addEventListener('keydown', function(e) {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+            e.preventDefault();
+            searchInput.focus();
+            searchInput.select();
+            return false;
+        }
+    });
+
+    // Enter triggers search
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            const query = e.target.value.toLowerCase().trim();
+            filterDocs(query);
+        }
+    });
+
+    // Escape clears search
+    searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            this.value = '';
+            filterDocs('');
+            this.blur();
+        }
+    });
+
+    function filterDocs(query) {
+        let visibleCount = 0;
+        
+        docCards.forEach(card => {
+            const title = card.dataset.title.toLowerCase();
+            const desc = card.dataset.desc.toLowerCase();
+            const tags = card.dataset.tags.toLowerCase();
+            
+            const matches = title.includes(query) || 
+                           desc.includes(query) || 
+                           tags.includes(query);
+            
+            if (matches || query === '') {
+                card.parentElement.style.display = 'block';
+                card.style.opacity = '1';
+                card.style.transform = 'scale(1)';
+                visibleCount++;
+            } else {
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    if (card.style.opacity === '0') {
+                        card.parentElement.style.display = 'none';
+                    }
+                }, 300);
+            }
+        });
+
+        noResults.style.display = (visibleCount === 0 && query !== '') ? 'flex' : 'none';
+    }
+
+    // Focus glow effect
+    searchInput.addEventListener('focus', function() {
+        this.parentElement.parentElement.style.boxShadow = '0 0 0 0.3rem rgba(164,97,226,0.25)';
+    });
+    
+    searchInput.addEventListener('blur', function() {
+        this.parentElement.parentElement.style.boxShadow = 'none';
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

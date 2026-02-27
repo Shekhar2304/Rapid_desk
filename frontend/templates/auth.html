@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Auth</title>
+<style>
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #e3dbdb;
+  font-family: Arial;
+}
+.container {
+  width: 700px;
+  height: 400px;
+  background: white;
+  display: flex;
+}
+.form-box, .overlay {
+  width: 50%;
+  padding: 40px;
+}
+.overlay {
+  background: linear-gradient(142deg, #3793ff, #fe368a);
+  color: white;
+}
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    {% if mode == 'login' %}
+    <div class="form-box">
+        <h2>Login</h2>
+        <form method="POST">
+            <input name="email" placeholder="Email" required>
+            <input name="password" type="password" placeholder="Password" required>
+            <button>Login</button>
+        </form>
+    </div>
+    <div class="overlay">
+        <h2>Hello!</h2>
+        <a href="/register" style="color:white;">Sign Up</a>
+    </div>
+    {% else %}
+    <div class="overlay">
+        <h2>Welcome Back!</h2>
+        <a href="/login" style="color:white;">Login</a>
+    </div>
+    <div class="form-box">
+        <h2>Register</h2>
+        <form method="POST">
+            <input name="username" placeholder="Username" required>
+            <input name="email" placeholder="Email" required>
+            <input name="password" type="password" placeholder="Password" required>
+            <button>Register</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>

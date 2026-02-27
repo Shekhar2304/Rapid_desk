@@ -1,0 +1,462 @@
+{% extends "layout.html" %}
+{% block title %}Profile - AI Tickets{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-header {
+        background: linear-gradient(135deg, rgba(164,97,226,0.15), rgba(76,201,240,0.15));
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 25px;
+        padding: 3rem;
+        margin-bottom: 3rem;
+        backdrop-filter: blur(25px);
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    .profile-avatar-lg {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        border: 6px solid rgba(255,255,255,0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3.5rem;
+        font-weight: 900;
+        color: white;
+        margin: 0 auto 2rem;
+        box-shadow: 0 25px 50px rgba(164,97,226,0.4);
+        transition: all 0.3s ease;
+    }
+    
+    .profile-avatar-lg:hover {
+        transform: scale(1.05);
+        box-shadow: 0 30px 60px rgba(164,97,226,0.5);
+    }
+    
+    .stats-card {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 20px;
+        padding: 2.5rem;
+        backdrop-filter: blur(15px);
+        transition: all 0.3s ease;
+        margin-bottom: 2rem;
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        border-color: rgba(164,97,226,0.3);
+    }
+    
+    .form-control, .form-select {
+        background: rgba(255,255,255,0.12) !important;
+        border: 1px solid rgba(255,255,255,0.25) !important;
+        border-radius: 15px !important;
+        color: white !important;
+        padding: 15px 20px !important;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        background: rgba(255,255,255,0.2) !important;
+        border-color: var(--primary) !important;
+        box-shadow: 0 0 0 0.25rem rgba(164,97,226,0.25) !important;
+        color: white !important;
+        transform: translateY(-2px);
+    }
+    
+    .form-control::placeholder {
+        color: rgba(255,255,255,0.5) !important;
+    }
+    
+    .plan-badge {
+        padding: 10px 25px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    
+    .activity-item {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .activity-item:hover {
+        background: rgba(164,97,226,0.15);
+        transform: translateX(10px);
+    }
+    
+    .btn-save {
+        background: linear-gradient(135deg, var(--success), #00b894);
+        border: none;
+        padding: 15px 40px;
+        border-radius: 25px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        box-shadow: 0 15px 40px rgba(0,212,170,0.4);
+    }
+    
+    .btn-save:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 25px 50px rgba(0,212,170,0.6);
+    }
+
+    .live-indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #00ff88;
+        box-shadow: 0 0 10px #00ff88;
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.5; }
+        100% { opacity: 1; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Profile Header -->
+    <div class="profile-header animate__animated animate__fadeInDown">
+        <div class="row align-items-center">
+            <div class="col-md-3 text-center text-md-start">
+                <div class="profile-avatar-lg" id="profileAvatar">
+                    {{ current_user.email[0].upper() if current_user.email else 'U' }}
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="d-flex justify-content-between align-items-start flex-column flex-md-row">
+                    <div>
+                        <h1 class="mb-3 fw-900" style="font-size: 2.5rem; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                            {{ current_user.username or (current_user.email.split('@')[0] if current_user.email else 'User') }}
+                        </h1>
+                        <p class="mb-2" style="color: rgba(255,255,255,0.9); font-size: 1.2rem;">
+                            {{ current_user.email }}
+                        </p>
+                        <div class="d-flex gap-3 flex-wrap align-items-center">
+                            <span class="plan-badge text-white" style="background: linear-gradient(135deg, var(--success), #00b894) !important;">
+                                <i class="fas fa-crown me-2"></i> Pro Plan
+                            </span>
+                            <span class="plan-badge bg-light text-dark">
+                                <i class="fas fa-calendar-check me-1"></i> Member Since {{ 'Feb 2026' if not current_user.created_at else current_user.created_at.strftime('%b %Y') }}
+                            </span>
+                            <div class="live-indicator" title="Live Data - Real Time Updates"></div>
+                        </div>
+                    </div>
+                    <div class="mt-3 mt-md-0 text-md-end">
+                        <button class="btn btn-outline-light me-2 mb-2 mb-md-0" data-bs-toggle="modal" data-bs-target="#uploadAvatar">
+                            <i class="fas fa-camera me-2"></i> Change Photo
+                        </button>
+                        <button class="btn btn-save btn-lg" id="saveProfileBtn" onclick="saveProfile()">
+                            <i class="fas fa-save me-2"></i> Save Changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <!-- Quick Stats -->
+            <div class="row mb-5">
+                <div class="col-md-4 mb-4">
+                    <div class="stats-card text-center h-100 animate__animated animate__fadeInUp">
+                        <i class="fas fa-ticket-alt mb-3" style="font-size: 3.5rem; color: var(--accent);"></i>
+                        <h2 class="mb-1 fw-900" style="font-size: 2.5rem;" data-count="1247" data-counter="totalTickets">1,247</h2>
+                        <p class="mb-0" style="color: rgba(255,255,255,0.8); font-size: 1.1rem;">Total Tickets</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="stats-card text-center h-100 animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+                        <i class="fas fa-robot mb-3" style="font-size: 3.5rem; color: var(--primary);"></i>
+                        <h2 class="mb-1 fw-900" style="font-size: 2.5rem;" data-count="94" data-counter="aiTickets">94%</h2>
+                        <p class="mb-0" style="color: rgba(255,255,255,0.8); font-size: 1.1rem;">Auto-resolved</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="stats-card text-center h-100 animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                        <i class="fas fa-bolt mb-3" style="font-size: 3.5rem; color: var(--success);"></i>
+                        <h2 class="mb-1 fw-900" style="font-size: 2.5rem;" id="avgResponse">1.8 min</h2>
+                        <p class="mb-0" style="color: rgba(255,255,255,0.8); font-size: 1.1rem;">Avg Response</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Settings -->
+            <div class="stats-card" id="settings">
+                <div class="d-flex justify-content-between align-items-center mb-5">
+                    <h2 class="mb-0 fw-900"><i class="fas fa-user-cog me-3 text-primary"></i>Account Settings</h2>
+                </div>
+                
+                <form id="profileForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label fw-bold fs-5 mb-3">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" value="{{ current_user.username or 'Shekhar Sourav' }}" placeholder="Enter your full name">
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label fw-bold fs-5 mb-3">Email Address</label>
+                            <input type="email" class="form-control" id="email" value="{{ current_user.email }}" readonly>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label fw-bold fs-5 mb-3">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" value="{{ current_user.phone or '+91 98765 43210' }}" placeholder="Enter phone number">
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label fw-bold fs-5 mb-3">Subscription Plan</label>
+                            <select class="form-select" id="plan">
+                                <option value="pro-annual" selected>Pro Plan - Annual ($99/mo)</option>
+                                <option value="starter-monthly">Starter Plan - Monthly ($29/mo)</option>
+                                <option value="business-annual">Business Plan - Annual ($299/mo)</option>
+                            </select>
+                        </div>
+                        <div class="col-12 mb-4">
+                            <label class="form-label fw-bold fs-5 mb-3">Bio</label>
+                            <textarea class="form-control" id="bio" rows="5" placeholder="Tell us about yourself...">AI enthusiast building intelligent ticket systems from Patna, Bihar. Passionate about automation and machine learning.</textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Billing Section -->
+            <div class="stats-card" id="billing">
+                <div class="d-flex justify-content-between align-items-center mb-5">
+                    <h2 class="mb-0 fw-900"><i class="fas fa-credit-card me-3 text-warning"></i>Billing & Payments</h2>
+                    <a href="#" class="btn btn-outline-warning">
+                        <i class="fas fa-cog me-2"></i>Manage Billing
+                    </a>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <h5 class="fw-bold mb-3">Current Plan</h5>
+                        <p class="fs-5 mb-2 fw-bold text-success">Pro Plan - Annual</p>
+                        <p class="mb-2" style="color: rgba(255,255,255,0.8);">$99/month (billed yearly)</p>
+                        <span class="plan-badge bg-success text-white">✅ Active</span>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <h5 class="fw-bold mb-3">Next Payment</h5>
+                        <p class="fs-5 mb-2 fw-bold text-warning">{{ 'March 15, 2026' }}</p>
+                        <p class="mb-2" style="color: rgba(255,255,255,0.8);">$1,188.00</p>
+                        <span class="plan-badge bg-warning text-dark">⏰ Upcoming</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Sidebar -->
+        <div class="col-lg-4">
+            <div class="stats-card sticky-top" style="top: 130px;">
+                <h3 class="mb-4 fw-bold"><i class="fas fa-chart-line me-2 text-accent"></i>Recent Activity</h3>
+                
+                <div class="activity-item animate__animated animate__fadeInRight">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-ticket-alt text-success me-2"></i>
+                            <strong>New ticket #1243 created</strong>
+                        </div>
+                        <small class="text-muted">2 min ago</small>
+                    </div>
+                </div>
+                
+                <div class="activity-item animate__animated animate__fadeInRight" style="animation-delay: 0.1s;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-robot text-primary me-2"></i>
+                            <strong>AI categorized 23 tickets</strong>
+                        </div>
+                        <small class="text-muted">1 hr ago</small>
+                    </div>
+                </div>
+                
+                <div class="activity-item animate__animated animate__fadeInRight" style="animation-delay: 0.2s;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Monthly quota reset</strong>
+                        </div>
+                        <small class="text-muted">Today</small>
+                    </div>
+                </div>
+                
+                <div class="activity-item animate__animated animate__fadeInRight" style="animation-delay: 0.3s;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-download text-info me-2"></i>
+                            <strong>API usage report downloaded</strong>
+                        </div>
+                        <small class="text-muted">Yesterday</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Upload Avatar Modal -->
+<div class="modal fade" id="uploadAvatar" tabindex="-1" aria-labelledby="uploadAvatarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: rgba(15,12,41,0.98); border: 1px solid rgba(255,255,255,0.2); color: white;">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="uploadAvatarLabel">
+                    <i class="fas fa-camera me-2"></i>Change Profile Photo
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-5">
+                <div class="profile-avatar-lg mb-4 mx-auto" style="background: linear-gradient(135deg, var(--primary), var(--accent));">
+                    {{ current_user.email[0].upper() if current_user.email else 'U' }}
+                </div>
+                <input type="file" class="form-control mb-4" id="avatarUpload" accept="image/*">
+                <button class="btn btn-nav-primary w-100" onclick="uploadAvatar()">
+                    <i class="fas fa-upload me-2"></i>Upload New Photo
+                </button>
+                <div class="mt-3 small text-muted">
+                    Supported: JPG, PNG, GIF (Max 2MB)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    let isSaving = false;
+    
+    // Smooth scroll for anchor links
+    $('a[href^="#"]').click(function(e) {
+        e.preventDefault();
+        const target = $($(this).attr('href'));
+        if (target.length) {
+            $('html, body').animate({
+                scrollTop: target.offset().top - 100
+            }, 800);
+        }
+    });
+
+    // Animate counters on scroll
+    function animateCounter(element, target, duration = 2000) {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+            start += increment;
+            if (start >= target) {
+                start = target;
+                clearInterval(timer);
+            }
+            $(element).text(Math.floor(start).toLocaleString());
+        }, 16);
+    }
+
+    // Observe stats cards
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const h2 = entry.target.querySelector('h2[data-count]');
+                if (h2) {
+                    const target = parseInt(h2.getAttribute('data-count'));
+                    const counterId = h2.getAttribute('data-counter');
+                    animateCounter(h2, target);
+                    observer.unobserve(entry.target);
+                }
+            }
+        });
+    });
+
+    $('.stats-card').each(function() {
+        observer.observe(this);
+    });
+
+    // 🔥 REAL SAVE FUNCTION - Working with your backend
+    window.saveProfile = function() {
+        if (isSaving) return;
+        
+        isSaving = true;
+        const btn = $('#saveProfileBtn')[0];
+        const originalText = btn.innerHTML;
+        
+        // Show loading
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+        btn.disabled = true;
+        
+        // Collect form data
+        const formData = {
+            fullName: $('#fullName').val(),
+            phone: $('#phone').val(),
+            plan: $('#plan').val(),
+            bio: $('#bio').val()
+        };
+        
+        // Send to backend
+        $.ajax({
+            url: '/profile/update',
+            method: 'POST',
+            data: formData,
+            success: function(response) {
+                // Success animation
+                btn.innerHTML = '<i class="fas fa-check me-2"></i>Saved!';
+                btn.style.background = 'linear-gradient(135deg, #00d4aa, #00b894)';
+                
+                // Update avatar with new initials
+                const fullName = formData.fullName;
+                const initials = fullName.charAt(0).toUpperCase();
+                $('#profileAvatar').text(initials);
+                
+                // Reset button after 2 seconds
+                setTimeout(function() {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                    btn.disabled = false;
+                    isSaving = false;
+                }, 2000);
+                
+                // Show success toast (if you have one)
+                if (typeof showToast === 'function') {
+                    showToast('Profile saved successfully!', 'success');
+                }
+            },
+            error: function() {
+                alert('Save failed. Please try again.');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                isSaving = false;
+            }
+        });
+    };
+
+    // Avatar upload
+    window.uploadAvatar = function() {
+        const fileInput = document.getElementById('avatarUpload');
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            if (file.size > 2 * 1024 * 1024) {
+                alert('File too large! Max 2MB.');
+                return;
+            }
+            console.log('Uploading avatar:', file.name);
+            alert('✅ Avatar uploaded successfully! (Demo)');
+            $('#uploadAvatar').modal('hide');
+        }
+    };
+});
+</script>
+{% endblock %}

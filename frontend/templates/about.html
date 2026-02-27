@@ -1,0 +1,596 @@
+{% extends "layout.html" %}
+{% block title %}About Us - AI Ticket System{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ABOUT HERO */
+.about-hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, rgba(15,12,41,0.98), rgba(48,43,99,0.92));
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.about-hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 15% 25%, rgba(164,97,226,0.35) 0%, transparent 50%),
+        radial-gradient(circle at 85% 75%, rgba(76,201,240,0.35) 0%, transparent 50%),
+        radial-gradient(circle at 50% 10%, rgba(0,212,170,0.25) 0%, transparent 50%);
+    animation: aboutHeroPulse 14s ease-in-out infinite;
+}
+
+@keyframes aboutHeroPulse {
+    0%, 100% { opacity: 0.75; transform: scale(1); }
+    33% { opacity: 1; transform: scale(1.04); }
+    66% { opacity: 0.9; transform: scale(1.02); }
+}
+
+.about-hero-container {
+    position: relative;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 1fr 600px;
+    gap: 140px;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 24px;
+    align-items: center;
+}
+
+.about-hero h1 {
+    font-size: clamp(4rem, 8vw, 6.2rem);
+    font-weight: 950;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #ffffff 0%, #f0e6ff 30%, #a461e2 60%, #4cc9f0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 48px;
+    letter-spacing: -0.03em;
+}
+
+.hero-subtitle-large {
+    font-size: 1.65rem;
+    color: rgba(255,255,255,0.92);
+    line-height: 1.8;
+    margin-bottom: 56px;
+    max-width: 650px;
+}
+
+.founder-stats {
+    display: flex;
+    gap: 64px;
+    margin: 72px 0;
+    flex-wrap: wrap;
+}
+
+.stat-item-large {
+    text-align: center;
+}
+
+.stat-number-large {
+    font-size: 3.2rem;
+    font-weight: 950;
+    background: linear-gradient(135deg, #a461e2, #4cc9f0, #00d4aa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.stat-label-large {
+    font-size: 1.15rem;
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+/* MISSION SECTION */
+.mission-section {
+    padding: 200px 0;
+    background: rgba(15,12,41,0.6);
+    position: relative;
+}
+
+.mission-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 120px;
+    align-items: center;
+}
+
+.mission-content h2 {
+    font-size: clamp(3.5rem, 7vw, 5rem);
+    font-weight: 950;
+    background: linear-gradient(135deg, #ffffff, #a461e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 48px;
+    letter-spacing: -0.02em;
+}
+
+.mission-text {
+    font-size: 1.45rem;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.85;
+    margin-bottom: 56px;
+    max-width: 550px;
+}
+
+.mission-points {
+    list-style: none;
+    padding: 0;
+}
+
+.mission-point {
+    font-size: 1.3rem;
+    color: rgba(255,255,255,0.85);
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    transition: all 0.3s ease;
+}
+
+.mission-point:hover {
+    color: white;
+    padding-left: 16px;
+    border-color: rgba(164,97,226,0.3);
+}
+
+.mission-point-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #a461e2, #4cc9f0);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: white;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+/* TEAM SECTION */
+.team-section {
+    padding: 200px 0;
+    background: linear-gradient(135deg, rgba(0,212,170,0.15), rgba(48,43,99,0.4));
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.team-card {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(35px);
+    border-radius: 40px;
+    padding: 80px 64px;
+    border: 1px solid rgba(255,255,255,0.2);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+
+.team-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #a461e2, #4cc9f0, #00d4aa);
+    transform: scaleX(0);
+    transition: transform 0.6s ease;
+}
+
+.team-card:hover::before {
+    transform: scaleX(1);
+}
+
+.team-card:hover {
+    transform: translateY(-28px) scale(1.03);
+    box-shadow: 0 80px 160px rgba(0,0,0,0.6);
+    border-color: rgba(164,97,226,0.4);
+}
+
+.team-icon-large {
+    width: 180px;
+    height: 180px;
+    background: linear-gradient(135deg, #a461e2, #4cc9f0);
+    border-radius: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 48px;
+    font-size: 4.5rem;
+    color: white;
+    box-shadow: 0 35px 70px rgba(164,97,226,0.5);
+}
+
+.team-title {
+    font-size: 2.6rem;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, #ffffff, #a461e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.team-subtitle {
+    font-size: 1.35rem;
+    color: rgba(255,255,255,0.9);
+    font-weight: 500;
+    margin-bottom: 32px;
+    line-height: 1.7;
+}
+
+/* CUSTOMERS SECTION */
+.customers-section {
+    padding: 200px 0;
+    background: rgba(15,12,41,0.7);
+}
+
+.customers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 48px;
+    margin: 100px 0;
+}
+
+.customer-card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(30px);
+    border-radius: 28px;
+    padding: 64px 48px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: all 0.4s ease;
+}
+
+.customer-card:hover {
+    transform: translateY(-16px);
+    background: rgba(164,97,226,0.2);
+    border-color: rgba(164,97,226,0.4);
+}
+
+.customer-logo {
+    width: 120px;
+    height: 120px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 24px;
+    margin: 0 auto 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: white;
+}
+
+.customer-quote {
+    font-size: 1.4rem;
+    font-style: italic;
+    color: rgba(255,255,255,0.95);
+    margin-bottom: 32px;
+    line-height: 1.75;
+    font-weight: 400;
+}
+
+.customer-author {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: white;
+}
+
+/* CTA SECTION */
+.cta-about {
+    padding: 180px 0;
+    background: linear-gradient(135deg, #a461e2, #4cc9f0);
+    text-align: center;
+    position: relative;
+}
+
+.cta-title-large {
+    font-size: clamp(3.8rem, 8vw, 5.5rem);
+    font-weight: 950;
+    color: white;
+    margin-bottom: 40px;
+    letter-spacing: -0.02em;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+    .about-hero-container { 
+        grid-template-columns: 1fr; 
+        gap: 100px; 
+        text-align: center; 
+    }
+    
+    .mission-container { 
+        grid-template-columns: 1fr; 
+        gap: 80px; 
+        text-align: center; 
+    }
+}
+
+@media (max-width: 768px) {
+    .founder-stats { 
+        justify-content: center; 
+        gap: 40px; 
+    }
+    
+    .team-grid { 
+        grid-template-columns: 1fr; 
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- ABOUT HERO -->
+<div class="about-hero">
+    <div class="about-hero-bg"></div>
+    <div class="about-hero-container">
+        <div>
+            <h1>Built by <span style="background: linear-gradient(135deg, #a461e2, #4cc9f0); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Engineers</span><br>For Engineers</h1>
+            
+            <p class="hero-subtitle-large">
+                Founded by ex-Google, Amazon, and Microsoft engineers who were frustrated with 
+                existing support tools. We built the world's most intelligent ticketing platform 
+                from first principles to solve real enterprise problems.
+            </p>
+            
+            <div class="founder-stats">
+                <div class="stat-item-large">
+                    <span class="stat-number-large">500+</span>
+                    <span class="stat-label-large">Global Engineers</span>
+                </div>
+                <div class="stat-item-large">
+                    <span class="stat-number-large">50M+</span>
+                    <span class="stat-label-large">Tickets Trained On</span>
+                </div>
+                <div class="stat-item-large">
+                    <span class="stat-number-large">15K+</span>
+                    <span class="stat-label-large">Enterprise Customers</span>
+                </div>
+            </div>
+        </div>
+        
+        <div style="position: relative;">
+            <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=85" 
+                 alt="Engineering Team" style="width: 100%; border-radius: 40px; box-shadow: 0 80px 160px rgba(0,0,0,0.7);">
+        </div>
+    </div>
+</div>
+
+<!-- MISSION SECTION -->
+<section class="mission-section">
+    <div class="container">
+        <div class="mission-container">
+            <div class="mission-content">
+                <h2>Our Mission</h2>
+                <p class="mission-text">
+                    Eliminate support chaos with intelligent automation that scales to enterprise volumes. 
+                    We're not just building software—we're redefining how the world handles customer support.
+                </p>
+                
+                <ul class="mission-points">
+                    <li class="mission-point">
+                        <div class="mission-point-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div>67% faster resolutions through intelligent automation</div>
+                    </li>
+                    <li class="mission-point">
+                        <div class="mission-point-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div>96.8% AI accuracy across 28+ languages and dialects</div>
+                    </li>
+                    <li class="mission-point">
+                        <div class="mission-point-icon">
+                            <i class="fas fa-infinity"></i>
+                        </div>
+                        <div>Unlimited scale for Fortune 500 enterprises</div>
+                    </li>
+                    <li class="mission-point">
+                        <div class="mission-point-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div>Enterprise-grade security and compliance (SOC 2, GDPR, HIPAA)</div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div style="position: relative;">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=85" 
+                     alt="Mission Vision" style="width: 100%; border-radius: 36px; box-shadow: 0 60px 120px rgba(0,0,0,0.5);">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TEAM SECTION -->
+<section class="team-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title" style="color: white;">Leadership Team</h2>
+            <p style="color: rgba(255,255,255,0.9); font-size: 1.5rem; max-width: 800px; margin: 0 auto 100px;">
+                World-class engineers from FAANG companies building the future of support automation
+            </p>
+        </div>
+        
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-icon-large">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h3 class="team-title">Dr. Sarah Chen</h3>
+                <p class="team-subtitle">CEO & Co-Founder</p>
+                <p style="color: rgba(255,255,255,0.8); font-size: 1.15rem; line-height: 1.7;">
+                    Ex-Google AI (5 yrs), Stanford PhD in NLP. Built Google's enterprise support AI systems.
+                </p>
+            </div>
+            
+            <div class="team-card">
+                <div class="team-icon-large">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <h3 class="team-title">Mike Patel</h3>
+                <p class="team-subtitle">CTO & Co-Founder</p>
+                <p style="color: rgba(255,255,255,0.8); font-size: 1.15rem; line-height: 1.7;">
+                    Ex-AWS (7 yrs), architected Netflix-scale infrastructure. MIT Computer Science.
+                </p>
+            </div>
+            
+            <div class="team-card">
+                <div class="team-icon-large">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="team-title">Elena Rodriguez</h3>
+                <p class="team-subtitle">Head of Engineering</p>
+                <p style="color: rgba(255,255,255,0.8); font-size: 1.15rem; line-height: 1.7;">
+                    Ex-Meta (6 yrs), scaled Facebook's support systems to 3B+ users. UC Berkeley.
+                </p>
+            </div>
+            
+            <div class="team-card">
+                <div class="team-icon-large">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3 class="team-title">David Kim</h3>
+                <p class="team-subtitle">VP Customer Success</p>
+                <p style="color: rgba(255,255,255,0.8); font-size: 1.15rem; line-height: 1.7;">
+                    Ex-Salesforce (8 yrs), built enterprise CS teams for Fortune 500 clients.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CUSTOMERS SECTION -->
+<section class="customers-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Trusted by Global Leaders</h2>
+            <p style="color: rgba(255,255,255,0.9); font-size: 1.5rem; max-width: 700px; margin: 0 auto 100px;">
+                15,000+ enterprises including Fortune 500 companies trust our platform
+            </p>
+        </div>
+        
+        <div class="customers-grid">
+            <div class="customer-card">
+                <div class="customer-logo">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <p class="customer-quote">
+                    "Reduced our support costs by 68% while improving CSAT to 98%. Game changer."
+                </p>
+                <div class="customer-author">Global Fintech Leader</div>
+            </div>
+            
+            <div class="customer-card">
+                <div class="customer-logo">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <p class="customer-quote">
+                    "Our support team went from chaos to precision. 96.8% categorization accuracy is unreal."
+                </p>
+                <div class="customer-author">SaaS Unicorn</div>
+            </div>
+            
+            <div class="customer-card">
+                <div class="customer-logo">
+                    <i class="fas fa-building"></i>
+                </div>
+                <p class="customer-quote">
+                    "Enterprise-ready from day one. Perfect for our 50K agent global support operation."
+                </p>
+                <div class="customer-author">Fortune 500 Retailer</div>
+            </div>
+            
+            <div class="customer-card">
+                <div class="customer-logo">
+                    <i class="fas fa-cloud"></i>
+                </div>
+                <p class="customer-quote">
+                    "Zero latency at hyperscale. Our 10M monthly tickets now process flawlessly."
+                </p>
+                <div class="customer-author">Cloud Infrastructure Provider</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="cta-about">
+    <div class="container">
+        <h2 class="cta-title-large">Join the AI Support Revolution</h2>
+        <p style="font-size: 1.6rem; color: rgba(255,255,255,0.95); margin-bottom: 64px; max-width: 750px; margin-left: auto; margin-right: auto; line-height: 1.8;">
+            Built by engineers who understand enterprise support challenges. Trusted by companies that can't afford downtime.
+        </p>
+        <div style="display: flex; gap: 36px; justify-content: center; flex-wrap: wrap;">
+            <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-6 py-4" style="font-size: 1.4rem; font-weight: 800; border-radius: 36px;">
+                🚀 Start Free Trial
+            </a>
+            <a href="{{ url_for('contact') }}" class="btn btn-outline-light btn-lg px-6 py-4" style="font-size: 1.4rem; font-weight: 800; border-radius: 36px;">
+                📞 Talk to Our Team
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Intersection Observer for staggered animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                entry.target.style.animationDelay = `${index * 0.2}s`;
+                entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    // Observe all animated elements
+    document.querySelectorAll('.team-card, .customer-card, .mission-point, .stat-item-large').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Team card hover effects
+    document.querySelectorAll('.team-card').forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.15}s`;
+    });
+
+    // Mission points hover
+    document.querySelectorAll('.mission-point').forEach(point => {
+        point.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateX(12px)';
+        });
+        point.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateX(0)';
+        });
+    });
+});
+</script>
+{% endblock %}

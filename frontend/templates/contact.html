@@ -1,0 +1,333 @@
+{% extends "layout.html" %}
+{% block title %}Contact Us - AI Ticket System{% endblock %}
+
+{% block extra_css %}
+<style>
+
+/* ================= HERO ================= */
+.contact-hero{
+min-height:100vh;
+background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+display:flex;
+align-items:center;
+position:relative;
+overflow:hidden;
+}
+
+.hero-bg{
+position:absolute;
+inset:0;
+background:
+radial-gradient(circle at 20% 80%,rgba(164,97,226,.3),transparent 50%),
+radial-gradient(circle at 80% 20%,rgba(76,201,240,.3),transparent 50%);
+animation:bgPulse 15s infinite;
+}
+
+@keyframes bgPulse{
+0%,100%{opacity:.7}
+50%{opacity:1}
+}
+
+.hero-content{
+position:relative;
+z-index:2;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:80px;
+max-width:1400px;
+margin:auto;
+padding:40px;
+align-items:center;
+}
+
+.hero-h1{
+font-size:clamp(3rem,7vw,5rem);
+font-weight:900;
+background:linear-gradient(135deg,#fff,#a461e2,#4cc9f0);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.hero-subtitle{
+font-size:1.4rem;
+color:#fff;
+margin-top:20px;
+}
+
+/* ================= FORM ================= */
+.form-section{
+padding:120px 0;
+background:#0f0c29;
+}
+
+.form-container{
+max-width:900px;
+margin:auto;
+}
+
+.form-card{
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(40px);
+border-radius:30px;
+padding:60px;
+border:1px solid rgba(255,255,255,.2);
+}
+
+.form-group{
+position:relative;
+margin-bottom:30px;
+}
+
+.form-control{
+width:100%;
+background:rgba(255,255,255,.1);
+border:2px solid rgba(255,255,255,.3);
+border-radius:20px;
+padding:18px 24px;
+color:#fff;
+}
+
+.form-control:focus{
+border-color:#a461e2;
+outline:none;
+}
+
+.form-control::placeholder{
+color:transparent;
+}
+
+.form-floating-label{
+position:absolute;
+left:22px;
+top:18px;
+color:#ccc;
+transition:.3s;
+pointer-events:none;
+}
+
+.form-control:focus + .form-floating-label,
+.form-control:not(:placeholder-shown) + .form-floating-label{
+top:-10px;
+font-size:.85rem;
+background:#1a162e;
+padding:0 6px;
+color:#a461e2;
+}
+
+.submit-button{
+width:100%;
+padding:22px;
+border:none;
+border-radius:28px;
+background:linear-gradient(135deg,#a461e2,#4cc9f0);
+color:#fff;
+font-size:1.2rem;
+font-weight:700;
+transition:.3s;
+}
+
+.submit-button:hover{
+transform:translateY(-4px);
+}
+
+/* ================= METHODS ================= */
+.methods-section{
+padding:140px 0;
+background:linear-gradient(135deg,#00d4aa20,#302b63);
+text-align:center;
+}
+
+.methods-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:40px;
+max-width:1200px;
+margin:auto;
+}
+
+.method-card{
+background:rgba(255,255,255,.08);
+padding:50px;
+border-radius:24px;
+border:1px solid rgba(255,255,255,.15);
+transition:.4s;
+}
+
+.method-card:hover{
+transform:translateY(-12px);
+}
+
+.method-icon{
+font-size:40px;
+margin-bottom:15px;
+color:#4cc9f0;
+}
+
+.method-title{
+color:white;
+font-weight:700;
+font-size:1.6rem;
+}
+
+.method-desc{
+color:#ddd;
+margin:10px 0;
+}
+
+.method-link{
+color:#a461e2;
+font-weight:700;
+text-decoration:none;
+}
+
+@media(max-width:900px){
+.hero-content{grid-template-columns:1fr;text-align:center;}
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="contact-hero">
+<div class="hero-bg"></div>
+
+<div class="hero-content">
+
+<div>
+<h1 class="hero-h1">Get Your Personalized Demo</h1>
+<p class="hero-subtitle">
+Talk to our AI specialists and see live automation in action.
+</p>
+</div>
+
+<div>
+<img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56"
+style="width:100%;border-radius:25px;">
+</div>
+
+</div>
+</section>
+
+<!-- FORM -->
+<section class="form-section">
+<div class="form-container">
+
+<div class="form-card">
+ 
+<form id="contactForm" method="POST" action="{{ url_for('contact') }}">
+
+
+<div class="form-group">
+<input type="text" id="fullName" name="fullName" class="form-control" placeholder=" " required>
+<label class="form-floating-label">👤 Full Name *</label>
+</div>
+
+<div class="form-group">
+<input type="email" id="email" name="email" class="form-control" placeholder=" " required>
+<label class="form-floating-label">📧 Email *</label>
+</div>
+
+<div class="form-group">
+<input type="text" id="company" name="company" class="form-control" placeholder=" ">
+<label class="form-floating-label">🏢 Company</label>
+</div>
+
+<div class="form-group">
+<input type="tel" id="phone" name="phone" class="form-control" placeholder=" ">
+<label class="form-floating-label">📞 Phone</label>
+</div>
+
+<div class="form-group">
+<textarea id="message" name="message" class="form-control" placeholder=" "></textarea>
+<label class="form-floating-label">💬 Message</label>
+</div>
+
+<button type="submit" class="submit-button">
+📅 Book Personalized Demo
+</button>
+
+</form>
+
+</div>
+</div>
+</section>
+
+<!-- METHODS -->
+<section class="methods-section">
+
+<h2 style="color:white;font-size:3rem;margin-bottom:60px;">
+Immediate Help Available
+</h2>
+
+<div class="methods-grid">
+
+<div class="method-card">
+<div class="method-icon"><i class="fas fa-phone"></i></div>
+<div class="method-title">Phone Support</div>
+<p class="method-desc">24/7 priority assistance</p>
+<a href="tel:+18885550123" class="method-link">+1 (888) 555-0123</a>
+</div>
+
+<div class="method-card">
+<div class="method-icon"><i class="fas fa-envelope"></i></div>
+<div class="method-title">Email Support</div>
+<p class="method-desc">Fast response guaranteed</p>
+<a href="mailto:support@aiticketsystem.com" class="method-link">
+support@aiticketsystem.com
+</a>
+</div>
+
+<div class="method-card">
+<div class="method-icon"><i class="fab fa-slack"></i></div>
+<div class="method-title">Slack Community</div>
+<p class="method-desc">Join support professionals</p>
+<a href="#" class="method-link">#aiticketsystem</a>
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+const form=document.getElementById("contactForm");
+const btn=form.querySelector(".submit-button");
+
+form.addEventListener("submit",function(e){
+e.preventDefault();
+
+const name=document.getElementById("fullName").value.trim();
+const email=document.getElementById("email").value.trim();
+
+if(!name||!email){
+alert("Please fill required fields");
+return;
+}
+
+const original=btn.innerHTML;
+
+btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Booking...';
+btn.disabled=true;
+
+setTimeout(()=>{
+btn.innerHTML="✅ Demo Booked!";
+btn.style.background="linear-gradient(135deg,#00d4aa,#00b894)";
+
+setTimeout(()=>{
+form.submit();   // SEND TO FLASK
+},1200);
+
+},1500);
+
+});
+
+});
+</script>
+{% endblock %}

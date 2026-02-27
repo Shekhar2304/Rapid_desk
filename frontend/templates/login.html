@@ -1,0 +1,219 @@
+{% extends "layout.html" %}
+{% block title %}Login - AI Tickets{% endblock %}
+
+{% block extra_css %}
+<style>
+
+/* ===== LOGIN SECTION ===== */
+
+.login-wrapper{
+min-height:85vh;
+display:flex;
+justify-content:center;
+align-items:center;
+position:relative;
+}
+
+/* animated background glow */
+.login-wrapper::before{
+content:"";
+position:absolute;
+width:600px;
+height:600px;
+background:radial-gradient(circle,
+rgba(164,97,226,.35),
+transparent 60%);
+filter:blur(120px);
+animation:floatGlow 8s ease-in-out infinite;
+}
+
+@keyframes floatGlow{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-40px)}
+}
+
+/* card */
+.login-card{
+width:900px;
+max-width:95%;
+background:rgba(255,255,255,.06);
+backdrop-filter:blur(25px);
+border-radius:20px;
+overflow:hidden;
+display:flex;
+box-shadow:0 40px 80px rgba(0,0,0,.4);
+}
+
+/* form side */
+.form-side{
+width:50%;
+padding:60px;
+}
+
+.form-side h2{
+font-weight:800;
+margin-bottom:20px;
+}
+
+/* overlay side */
+.overlay-side{
+width:50%;
+background:linear-gradient(135deg,#a461e2,#4cc9f0);
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:40px;
+}
+
+.overlay-side h2{
+font-weight:800;
+margin-bottom:10px;
+}
+
+.overlay-side a{
+color:white;
+font-weight:600;
+text-decoration:none;
+border:1px solid white;
+padding:10px 25px;
+border-radius:25px;
+display:inline-block;
+margin-top:15px;
+transition:.3s;
+}
+
+.overlay-side a:hover{
+background:white;
+color:#302b63;
+}
+
+/* inputs */
+.form-control{
+background:rgba(255,255,255,.08);
+border:none;
+color:white;
+}
+
+.form-control:focus{
+background:rgba(255,255,255,.12);
+color:white;
+box-shadow:none;
+}
+
+/* login button */
+.btn-login{
+background:linear-gradient(135deg,#a461e2,#4cc9f0);
+border:none;
+padding:12px;
+font-weight:700;
+border-radius:25px;
+}
+
+/* flash */
+.flash-msg{
+background:rgba(255,0,0,.15);
+padding:10px;
+border-radius:8px;
+margin-bottom:15px;
+}
+
+/* responsive */
+@media(max-width:900px){
+.login-card{
+flex-direction:column;
+}
+.form-side,
+.overlay-side{
+width:100%;
+}
+}
+
+</style>
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="login-wrapper">
+
+<div class="login-card reveal">
+
+<!-- FORM -->
+<div class="form-side">
+
+<h2>Welcome Back 👋</h2>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% for category, message in messages %}
+<div class="flash-msg">{{ message }}</div>
+{% endfor %}
+{% endwith %}
+
+<form method="POST">
+
+<input name="email"
+class="form-control mb-3"
+type="email"
+placeholder="Email Address"
+required>
+
+<div class="input-group mb-3">
+
+<input id="password"
+name="password"
+class="form-control"
+type="password"
+placeholder="Password"
+required>
+
+<button class="btn btn-outline-light"
+type="button"
+onclick="togglePassword()">
+<i class="fa fa-eye"></i>
+</button>
+
+</div>
+
+<button class="btn btn-login w-100">
+Login
+</button>
+
+</form>
+
+</div>
+
+<!-- OVERLAY -->
+<div class="overlay-side">
+
+<div>
+<h2>Hello, Friend!</h2>
+<p>Create an account and start automating tickets instantly.</p>
+
+<a href="{{ url_for('register') }}">
+Sign Up
+</a>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}
+
+
+
+{% block extra_js %}
+<script>
+
+/* password toggle */
+function togglePassword(){
+const pass=document.getElementById("password");
+pass.type=pass.type==="password"?"text":"password";
+}
+
+</script>
+{% endblock %}

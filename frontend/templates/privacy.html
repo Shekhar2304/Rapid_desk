@@ -1,0 +1,448 @@
+{% extends "layout.html" %}
+{% block title %}Privacy Policy - RapidDesk AI{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ================= PRIVACY POLICY CYBERPUNK ================= */
+:root {
+    --privacy-gradient: linear-gradient(135deg, #a461e2 0%, #4cc9f0 50%, #00d4aa 100%);
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --security-glow: 0 0 25px rgba(0, 212, 170, 0.4);
+    --shield-glow: 0 0 30px rgba(164, 97, 226, 0.3);
+}
+
+.privacy-hero {
+    min-height: 70vh;
+    background: linear-gradient(145deg, rgba(15,12,29,0.95), rgba(48,43,99,0.9));
+    border-radius: 0 0 40px 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.privacy-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(164,97,226,0.2) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(0,212,170,0.2) 0%, transparent 50%);
+    animation: shield-pulse 6s ease-in-out infinite;
+}
+
+@keyframes shield-pulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+
+.privacy-main {
+    background: var(--glass-bg);
+    backdrop-filter: blur(35px);
+    border: 1px solid var(--glass-border);
+    border-radius: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.privacy-main::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.6s;
+}
+
+.privacy-main:hover::before { left: 100%; }
+
+.privacy-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 2.5rem;
+    height: 100%;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.privacy-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.4), var(--security-glow);
+}
+
+.security-badge {
+    display: inline-flex;
+    align-items: center;
+    background: var(--privacy-gradient);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    box-shadow: var(--shield-glow);
+    animation: badge-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes badge-glow {
+    from { box-shadow: var(--shield-glow); }
+    to { box-shadow: 0 0 40px rgba(164,97,226,0.6); }
+}
+
+.feature-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 2px solid rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+}
+
+.privacy-card:hover .feature-icon {
+    transform: scale(1.1) rotate(5deg);
+    border-color: var(--privacy-gradient);
+    background: var(--privacy-gradient);
+    color: white;
+    box-shadow: var(--security-glow);
+}
+
+.compliance-grid {
+    background: rgba(15,12,41,0.6);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    padding: 3rem;
+}
+
+.compliance-badge {
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255,255,255,0.2);
+}
+
+.compliance-badge:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+
+.compliance-badge.soc2 { background: rgba(0,212,170,0.1); color: #00d4aa; border-color: #00d4aa; }
+.compliance-badge.gdpr { background: rgba(76,201,240,0.1); color: #4cc9f0; border-color: #4cc9f0; }
+.compliance-badge.hipaa { background: rgba(255,107,107,0.1); color: #ff6b6b; border-color: #ff6b6b; }
+
+.stats-metric {
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+}
+
+.metric-number {
+    font-size: 3rem;
+    font-weight: 900;
+    line-height: 1;
+    background: var(--privacy-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 768px) {
+    .privacy-hero { min-height: 60vh; }
+    .privacy-card { padding: 2rem; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= PRIVACY HERO ================= -->
+<section class="privacy-hero d-flex align-items-center position-relative">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8 text-center">
+                <div class="privacy-main p-6 position-relative">
+                    <div class="security-badge mb-5 d-inline-block">
+                        <i class="fas fa-shield-alt"></i>
+                        Enterprise-Grade Security
+                    </div>
+                    <h1 class="display-3 fw-bold mb-4" style="background: var(--privacy-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                        Privacy & Security
+                    </h1>
+                    <p class="lead mb-5" style="color: rgba(255,255,255,0.85); font-size: 1.4rem; max-width: 700px; margin: 0 auto;">
+                        Your data is protected with military-grade encryption, zero-knowledge architecture, and full GDPR/SOC2 compliance
+                    </p>
+                    
+                    <!-- Security Stats -->
+                    <div class="row g-4 mb-5">
+                        <div class="col-md-4">
+                            <div class="stats-metric">
+                                <div class="h5 fw-bold mb-2" style="color: rgba(255,255,255,0.7);">Encryption</div>
+                                <div class="metric-number">AES-256</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stats-metric">
+                                <div class="h5 fw-bold mb-2" style="color: rgba(255,255,255,0.7);">Compliance</div>
+                                <div class="metric-number">SOC2 ✓</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stats-metric">
+                                <div class="h5 fw-bold mb-2" style="color: rgba(255,255,255,0.7);">Retention</div>
+                                <div class="metric-number">Zero</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= DATA PROTECTION GRID ================= -->
+<section class="container py-7">
+    <div class="row g-4 justify-content-center">
+        
+        <!-- WHAT WE COLLECT -->
+        <div class="col-lg-6">
+            <div class="privacy-card h-100">
+                <div class="feature-icon">
+                    <i class="fas fa-database" style="color: #a461e2;"></i>
+                </div>
+                <h3 class="h4 fw-bold mb-4" style="color: rgba(255,255,255,0.95);">What We Collect</h3>
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-3 d-flex align-items-start">
+                        <i class="fas fa-check-circle text-success mt-1 me-3 flex-shrink-0" style="font-size: 1.2rem;"></i>
+                        <div>
+                            <strong>Account Information</strong><br>
+                            <small style="color: rgba(255,255,255,0.7);">Email, name, organization (encrypted)</small>
+                        </div>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start">
+                        <i class="fas fa-check-circle text-success mt-1 me-3 flex-shrink-0" style="font-size: 1.2rem;"></i>
+                        <div>
+                            <strong>Ticket Data</strong><br>
+                            <small style="color: rgba(255,255,255,0.7);">Content processed in-memory, never stored</small>
+                        </div>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start">
+                        <i class="fas fa-check-circle text-success mt-1 me-3 flex-shrink-0" style="font-size: 1.2rem;"></i>
+                        <div>
+                            <strong>Usage Analytics</strong><br>
+                            <small style="color: rgba(255,255,255,0.7);">Aggregated, anonymized metrics only</small>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HOW WE PROTECT -->
+        <div class="col-lg-6">
+            <div class="privacy-card h-100">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt" style="color: #4cc9f0;"></i>
+                </div>
+                <h3 class="h4 fw-bold mb-4" style="color: rgba(255,255,255,0.95);">How We Protect</h3>
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-3 d-flex align-items-start">
+                        <i class="fas fa-lock text-primary mt-1 me-3 flex-shrink-0" style="font-size: 1.2rem;"></i>
+                        <div>
+                            <strong>AES-256 Encryption</strong><br>
+                            <small style="color: rgba(255,255,255,0.7);">End-to-end at rest and in-transit</small>
+                        </div>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start">
+                        <i class="fas fa-lock text-primary mt-1 me-3 flex-shrink-0" style="font-size: 1.2rem;"></i>
+                        <div>
+                            <strong>Zero-Knowledge</strong><br>
+                            <small style="color: rgba(255,255,255,0.7);">We cannot access your content</small>
+                        </div>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start">
+                        <i class="fas fa-lock text-primary mt-1 me-3 flex-shrink-0" style="font-size: 1.2rem;"></i>
+                        <div>
+                            <strong>Zero Retention</strong><br>
+                            <small style="color: rgba(255,255,255,0.7);">Ticket data deleted after processing</small>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= COMPLIANCE CERTIFICATIONS ================= -->
+<section class="container py-7">
+    <div class="compliance-grid">
+        <div class="text-center mb-6">
+            <h2 class="display-5 fw-bold mb-4" style="background: var(--privacy-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                Enterprise Compliance
+            </h2>
+            <p class="lead mb-0" style="color: rgba(255,255,255,0.8); max-width: 600px; margin: 0 auto;">
+                Certified for the world's most secure organizations
+            </p>
+        </div>
+        
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4 col-lg-3">
+                <div class="compliance-badge soc2 w-100 text-center">
+                    <i class="fas fa-certificate"></i>
+                    SOC 2 Type II
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div class="compliance-badge gdpr w-100 text-center">
+                    <i class="fas fa-euro-sign"></i>
+                    GDPR
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div class="compliance-badge hipaa w-100 text-center">
+                    <i class="fas fa-notes-medical"></i>
+                    HIPAA Ready
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div class="compliance-badge w-100 text-center" style="background: rgba(255,193,7,0.1); color: #ffc107; border-color: #ffc107;">
+                    <i class="fas fa-users"></i>
+                    10K+ Enterprises
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= SECURITY ARCHITECTURE ================= -->
+<section class="container py-7">
+    <div class="row g-4 align-items-center">
+        <div class="col-lg-6">
+            <div class="privacy-card">
+                <h3 class="h4 fw-bold mb-4" style="color: rgba(255,255,255,0.95);">Security Architecture</h3>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="text-center p-3 border border-white opacity-25 rounded-3">
+                            <i class="fas fa-cloud text-info fa-2x mb-2"></i>
+                            <div>Kubernetes</div>
+                            <small class="d-block" style="color: rgba(255,255,255,0.6);">Zero-trust cluster</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-center p-3 border border-white opacity-25 rounded-3">
+                            <i class="fas fa-key text-warning fa-2x mb-2"></i>
+                            <div>Key Vault</div>
+                            <small class="d-block" style="color: rgba(255,255,255,0.6);">HSM protected</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-center p-3 border border-white opacity-25 rounded-3">
+                            <i class="fas fa-firewall text-danger fa-2x mb-2"></i>
+                            <div>WAF</div>
+                            <small class="d-block" style="color: rgba(255,255,255,0.6);">Cloudflare Enterprise</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-center p-3 border border-white opacity-25 rounded-3">
+                            <i class="fas fa-audit-trail text-success fa-2x mb-2"></i>
+                            <div>Audits</div>
+                            <small class="d-block" style="color: rgba(255,255,255,0.6);">Real-time monitoring</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="privacy-card">
+                <h3 class="h4 fw-bold mb-4" style="color: rgba(255,255,255,0.95);">Your Rights</h3>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center p-3 border border-white opacity-25 rounded-3">
+                            <div class="feature-icon me-3" style="width: 48px; height: 48px;">
+                                <i class="fas fa-download" style="color: #00d4aa; font-size: 1rem;"></i>
+                            </div>
+                            <div>
+                                <strong>Export Data</strong>
+                                <small class="d-block" style="color: rgba(255,255,255,0.7);">Download anytime</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex align-items-center p-3 border border-white opacity-25 rounded-3">
+                            <div class="feature-icon me-3" style="width: 48px; height: 48px;">
+                                <i class="fas fa-trash" style="color: #ff6b6b; font-size: 1rem;"></i>
+                            </div>
+                            <div>
+                                <strong>Delete Account</strong>
+                                <small class="d-block" style="color: rgba(255,255,255,0.7);">Permanent erasure</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= CONTACT SECTION ================= -->
+<section class="container py-7">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <div class="privacy-card p-6">
+                <h3 class="h4 fw-bold mb-4" style="color: rgba(255,255,255,0.95);">Questions?</h3>
+                <p class="lead mb-5" style="color: rgba(255,255,255,0.8);">
+                    Contact our security team directly
+                </p>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <a href="mailto:security@rapiddesk.ai" class="btn btn-lg w-100 text-white rounded-pill fw-bold p-4" 
+                           style="background: var(--privacy-gradient);">
+                            <i class="fas fa-envelope me-3"></i>
+                            security@rapiddesk.ai
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="#" class="btn btn-lg w-100 text-white rounded-pill fw-bold p-4 border border-white">
+                            <i class="fas fa-file-contract me-3"></i>
+                            Data Processing Agreement
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Smooth hover animations
+document.querySelectorAll('.privacy-card').forEach(card => {
+    card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-10px)';
+    });
+    card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+    });
+});
+
+// Email obfuscation protection
+document.querySelector('a[href^="mailto:"]').addEventListener('click', function(e) {
+    // Analytics tracking would go here
+    console.log('Security contact clicked');
+});
+</script>
+{% endblock %}

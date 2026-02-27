@@ -1,0 +1,219 @@
+{% extends "layout.html" %}
+{% block title %}Features - RapidDesk AI{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-5 px-4">
+
+<!-- ================= HERO ================= -->
+<section class="text-center py-5 mb-5">
+    <h1 class="display-3 fw-bold gradient-text">
+        Intelligent AI Ticket System
+    </h1>
+    <p class="lead text-light-50">
+        Automated Classification • Smart Routing • Predictive Resolution
+    </p>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section class="mb-5">
+<div class="row g-4">
+
+<div class="col-md-4">
+<div class="glass-card p-4 h-100">
+<i class="fas fa-brain fa-3x text-primary mb-3"></i>
+<h4>AI Ticket Classification</h4>
+<p class="text-light-50">
+NLP models analyze ticket text and automatically detect
+category, department, and intent.
+</p>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="glass-card p-4 h-100">
+<i class="fas fa-bolt fa-3x text-success mb-3"></i>
+<h4>Priority Prediction</h4>
+<p class="text-light-50">
+Machine learning predicts urgency using historical
+ticket patterns and keywords.
+</p>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="glass-card p-4 h-100">
+<i class="fas fa-route fa-3x text-warning mb-3"></i>
+<h4>Smart Agent Routing</h4>
+<p class="text-light-50">
+Tickets are routed automatically to the best available
+agent based on expertise.
+</p>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="glass-card p-4 h-100">
+<i class="fas fa-comment-dots fa-3x text-info mb-3"></i>
+<h4>AI Response Suggestions</h4>
+<p class="text-light-50">
+AI recommends solutions using past resolved tickets
+and knowledge base learning.
+</p>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="glass-card p-4 h-100">
+<i class="fas fa-face-angry fa-3x text-danger mb-3"></i>
+<h4>Sentiment Detection</h4>
+<p class="text-light-50">
+Detect frustrated customers instantly using emotion
+analysis NLP models.
+</p>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="glass-card p-4 h-100">
+<i class="fas fa-chart-pie fa-3x text-accent mb-3"></i>
+<h4>Predictive Analytics</h4>
+<p class="text-light-50">
+Forecast workload spikes and support demand trends.
+</p>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- ================= ARCHITECTURE ================= -->
+<section class="py-5">
+<h2 class="text-center fw-bold mb-5">
+⚙ AI Ticket Prediction Architecture
+</h2>
+
+<div class="architecture-flow">
+
+<div class="arch-box">User Ticket Input</div>
+<div class="arrow">→</div>
+
+<div class="arch-box">Text Preprocessing<br>
+(Tokenization • Cleaning)</div>
+<div class="arrow">→</div>
+
+<div class="arch-box">NLP Engine<br>
+(spaCy / Transformer)</div>
+<div class="arrow">→</div>
+
+<div class="arch-box">ML Classifier<br>
+(Category + Priority)</div>
+<div class="arrow">→</div>
+
+<div class="arch-box">Smart Routing Engine</div>
+<div class="arrow">→</div>
+
+<div class="arch-box">Agent Dashboard</div>
+
+</div>
+
+</section>
+
+<!-- ================= DATA FLOW ================= -->
+<section class="py-5 text-center">
+<h2 class="fw-bold mb-4">🔄 Continuous Learning Loop</h2>
+
+<div class="glass-card p-5">
+<p class="lead text-light-50">
+Resolved Tickets → Stored Knowledge Base →
+Model Retraining → Improved Predictions
+</p>
+</div>
+</section>
+
+<!-- ================= SYSTEM LAYERS ================= -->
+<section class="py-5">
+<h2 class="text-center fw-bold mb-5">🧩 System Layers</h2>
+
+<div class="row text-center g-4">
+
+<div class="col-md-3">
+<div class="glass-card p-4">
+<h5>Presentation Layer</h5>
+<p class="text-light-50">Flask UI & Dashboard</p>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="glass-card p-4">
+<h5>Application Layer</h5>
+<p class="text-light-50">API + Business Logic</p>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="glass-card p-4">
+<h5>AI Layer</h5>
+<p class="text-light-50">NLP + ML Prediction</p>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="glass-card p-4">
+<h5>Data Layer</h5>
+<p class="text-light-50">Tickets Database</p>
+</div>
+</div>
+
+</div>
+</section>
+
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+
+.gradient-text{
+background:linear-gradient(45deg,var(--primary),var(--accent));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.glass-card{
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,0.1);
+transition:.4s;
+}
+
+.glass-card:hover{
+transform:translateY(-8px);
+background:rgba(255,255,255,0.1);
+}
+
+.architecture-flow{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+align-items:center;
+gap:15px;
+}
+
+.arch-box{
+padding:15px 25px;
+background:rgba(255,255,255,0.07);
+border-radius:10px;
+border:1px solid rgba(255,255,255,0.15);
+}
+
+.arrow{
+font-size:24px;
+color:var(--accent);
+}
+
+.text-light-50{
+color:rgba(255,255,255,.7);
+}
+
+</style>
+{% endblock %}

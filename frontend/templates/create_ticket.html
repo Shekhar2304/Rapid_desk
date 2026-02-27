@@ -1,0 +1,643 @@
+{% extends "layout.html" %}
+{% block title %}Create Ticket - AI Ticket System{% endblock %}
+
+{% block extra_css %}
+<style>
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.12);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --primary: #a461e2;
+    --accent: #4cc9f0;
+}
+
+.ticket-container {
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px);
+    border-radius: 24px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    overflow: hidden;
+    animation: slideUp 0.7s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    padding: 24px 0;
+}
+
+@media (max-width: 768px) {
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    .category-card {
+        padding: 20px 12px;
+    }
+}
+
+.category-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 28px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.category-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    border-color: var(--primary);
+    box-shadow: 0 25px 50px rgba(164, 97, 226, 0.4);
+    background: rgba(164, 97, 226, 0.2);
+}
+
+.category-card.selected {
+    background: linear-gradient(135deg, rgba(164,97,226,0.25), rgba(76,201,240,0.2));
+    border-color: var(--primary);
+    box-shadow: 0 0 40px rgba(164,97,226,0.5);
+    transform: scale(1.08);
+}
+
+.category-card:hover .category-icon {
+    transform: scale(1.2) rotate(5deg);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.category-icon {
+    font-size: 2.8rem;
+    margin-bottom: 12px;
+    display: block;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+    transition: transform 0.3s ease;
+}
+
+.priority-segment {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 2px solid var(--glass-border);
+    overflow: hidden;
+}
+
+.priority-option {
+    flex: 1;
+    padding: 24px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    border-right: 1px solid var(--glass-border);
+    position: relative;
+}
+
+.priority-option:last-child { border-right: none; }
+
+.priority-option:hover {
+    transform: translateY(-5px);
+    background: rgba(255,255,255,0.15);
+}
+
+.priority-option.selected {
+    background: var(--gradient-1);
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+}
+
+.priority-indicator {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.priority-timing {
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: block;
+    margin-top: 4px;
+}
+
+.floating-label {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.floating-label input,
+.floating-label textarea {
+    width: 100%;
+    border: 2px solid var(--glass-border);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(20px);
+    color: #ffffff !important;
+    caret-color: var(--primary);
+    padding: 20px 24px;
+    font-size: 1rem;
+    transition: all 0.4s ease;
+    box-sizing: border-box;
+}
+
+.floating-label input::placeholder,
+.floating-label textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.floating-label input:focus,
+.floating-label textarea:focus {
+    outline: none;
+    border-color: var(--primary) !important;
+    background: rgba(255, 255, 255, 0.22) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 0 0.25rem rgba(164, 97, 226, 0.3);
+    transform: translateY(-2px);
+}
+
+.floating-label label {
+    position: absolute;
+    left: 24px;
+    top: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    pointer-events: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    z-index: 1;
+}
+
+.floating-label input:focus + label,
+.floating-label input:not(:placeholder-shown) + label,
+.floating-label textarea:focus + label,
+.floating-label textarea:not(:placeholder-shown) + label {
+    top: -12px;
+    left: 16px;
+    font-size: 0.85rem;
+    color: var(--primary) !important;
+    background: rgba(15, 12, 41, 0.95);
+    padding: 0 12px;
+    border-radius: 8px;
+}
+
+.ai-panel {
+    background: linear-gradient(145deg, rgba(76,201,240,0.2), rgba(164,97,226,0.2));
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(76,201,240,0.4);
+    border-radius: 24px;
+    margin-top: 32px;
+    transition: all 0.6s ease;
+    transform: translateY(30px);
+    opacity: 0;
+}
+
+.ai-panel.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.btn-gradient {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border: none;
+    border-radius: 20px;
+    padding: 16px 32px;
+    font-weight: 600;
+    box-shadow: 0 10px 30px rgba(164,97,226,0.4);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-gradient:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px rgba(164,97,226,0.6);
+}
+
+.btn-gradient:active {
+    transform: translateY(-1px);
+}
+
+.btn-ai {
+    background: linear-gradient(135deg, #00c851, #28a745);
+    border: none;
+    border-radius: 20px;
+    padding: 16px 32px;
+    font-weight: 600;
+    box-shadow: 0 10px 30px rgba(40,167,69,0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-ai:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px rgba(40,167,69,0.6);
+}
+
+.btn-ai:active {
+    transform: translateY(-1px);
+}
+
+.btn-outline-light {
+    border: 2px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 16px 32px;
+    border-radius: 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+}
+
+.btn-outline-light:hover {
+    background: rgba(255,255,255,0.15);
+    transform: translateY(-2px);
+    border-color: rgba(255,255,255,0.5);
+}
+
+.confidence-bar {
+    height: 10px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 12px;
+}
+
+@keyframes growWidth {
+    from { width: 0; }
+    to { width: var(--target-width); }
+}
+
+.confidence-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00c851, #ffbb33, #ff4444);
+    border-radius: 6px;
+    animation: growWidth 1.5s ease-out forwards;
+}
+
+html { scroll-behavior: smooth; }
+
+@media (max-width: 768px) {
+    .priority-option { 
+        border-right: none !important; 
+        border-bottom: 1px solid var(--glass-border); 
+    }
+    .priority-option:last-child { 
+        border-bottom: none !important; 
+    }
+    .floating-label input, 
+    .floating-label textarea { 
+        font-size: 1.1rem; 
+        padding: 20px; 
+    }
+    .btn-gradient, .btn-ai, .btn-outline-light {
+        padding: 14px 24px;
+        font-size: 0.95rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="py-6" style="background: radial-gradient(ellipse at center, rgba(164,97,226,0.08) 0%, transparent 70%); min-height: 100vh;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-11 col-xl-10">
+                <div class="ticket-container mb-5">
+                    <div class="card-header bg-transparent border-0 p-5">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="bg-gradient p-4 rounded-circle me-4 shadow-lg" style="background: linear-gradient(135deg, var(--accent), var(--primary));">
+                                <i class="fas fa-ticket-alt fa-2x text-white"></i>
+                            </div>
+                            <div>
+                                <h1 class="mb-2 text-white fw-bold animate__animated animate__fadeIn">Create Smart Ticket</h1>
+                                <p class="text-white-50 mb-0 animate__animated animate__fadeIn" style="animation-delay: 0.2s;">AI will automatically categorize & prioritize your request</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body p-5">
+                        <form id="ticketForm" method="POST" action="{{ url_for('create_ticket') }}">
+                            <div class="row g-5">
+                                <div class="col-lg-8">
+                                    <div class="floating-label">
+                                        <input type="text" class="form-control form-control-lg" id="title" name="title" placeholder=" " required>
+                                        <label for="title"><i class="fas fa-heading me-2"></i>Ticket Subject</label>
+                                    </div>
+
+                                    <div class="floating-label">
+                                        <textarea class="form-control" id="description" name="description" rows="9" placeholder=" " required></textarea>
+                                        <label for="description"><i class="fas fa-align-left me-2"></i>Detailed Description</label>
+                                        <div class="form-text mt-3 text-white-50">
+                                            <i class="fas fa-info-circle me-2"></i> More details = Better AI suggestions
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="sticky-top" style="top: 120px;">
+                                        <!-- Smart Categories -->
+                                        <div class="card priority-segment mb-5 animate__animated animate__fadeIn" style="animation-delay: 0.3s;">
+                                            <div class="card-header bg-transparent border-0 py-4">
+                                                <h5 class="mb-0 text-white fw-semibold">
+                                                    <i class="fas fa-tags me-2 text-primary"></i>Smart Categories
+                                                </h5>
+                                            </div>
+                                            <div class="card-body p-0">
+                                                <input type="hidden" id="category" name="category" value="general">
+                                                <div class="category-grid">
+                                                    <div class="category-card" data-category="technical">
+                                                        <i class="fas fa-laptop-code category-icon" style="color: #4cc9f0;"></i>
+                                                        <div class="fw-semibold mt-2">Technical</div>
+                                                    </div>
+                                                    <div class="category-card" data-category="billing">
+                                                        <i class="fas fa-credit-card category-icon" style="color: #00d4aa;"></i>
+                                                        <div class="fw-semibold mt-2">Billing</div>
+                                                    </div>
+                                                    <div class="category-card" data-category="feature">
+                                                        <i class="fas fa-lightbulb category-icon" style="color: #ffd23f;"></i>
+                                                        <div class="fw-semibold mt-2">Feature</div>
+                                                    </div>
+                                                    <div class="category-card" data-category="account">
+                                                        <i class="fas fa-user-shield category-icon" style="color: #ff6b6b;"></i>
+                                                        <div class="fw-semibold mt-2">Account</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Priority Level with Timings -->
+                                        <div class="card priority-segment animate__animated animate__fadeIn" style="animation-delay: 0.4s;">
+                                            <div class="card-header bg-transparent border-0 py-4">
+                                                <h5 class="mb-0 text-white fw-semibold">
+                                                    <i class="fas fa-exclamation-circle me-2 text-warning"></i>Priority Level
+                                                </h5>
+                                            </div>
+                                            <div class="card-body p-0">
+                                                <input type="hidden" id="priority" name="priority" value="medium">
+                                                <div class="d-flex">
+                                                    <div class="priority-option" data-priority="low">
+                                                        <i class="fas fa-arrow-down priority-indicator text-success"></i>
+                                                        <div class="fw-semibold">Low</div>
+                                                        <span class="priority-timing text-success">5 days</span>
+                                                    </div>
+                                                    <div class="priority-option selected" data-priority="medium">
+                                                        <i class="fas fa-minus priority-indicator" style="color: #a461e2;"></i>
+                                                        <div class="fw-semibold">Medium</div>
+                                                        <span class="priority-timing" style="color: #a461e2;">48h</span>
+                                                    </div>
+                                                    <div class="priority-option" data-priority="high">
+                                                        <i class="fas fa-arrow-up priority-indicator text-danger"></i>
+                                                        <div class="fw-semibold">High</div>
+                                                        <span class="priority-timing text-danger">24h</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Action Buttons - Always Visible -->
+                            <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center mt-6 pt-5 border-top position-relative" 
+                                 style="border-color: rgba(255,255,255,0.15);">
+                                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-light px-5 py-3 fs-6">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                                </a>
+                                
+                                <div class="d-flex gap-3 order-lg-2">
+                                    <button type="button" id="analyzeBtn" class="btn btn-ai px-5 py-3 fs-6">
+                                        <i class="fas fa-brain me-2"></i>AI Analyze
+                                    </button>
+                                    <button type="submit" id="submitBtn" class="btn btn-gradient px-5 py-3 fs-6">
+                                        <i class="fas fa-paper-plane me-2"></i>Create Ticket
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- AI Preview Panel -->
+                        <div id="aiPreview"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.js"></script>
+<script>
+$(document).ready(function() {
+    // ✅ ENSURE BLANK FORM - Clear any existing draft on page load
+    localStorage.removeItem('ticketDraft');
+    $('input, textarea').val('').trigger('input'); // Force blank
+    console.log('✅ PERFECTLY BLANK - Ready for new ticket! 🆕 Current time:', new Date().toLocaleString());
+
+    let isAnalyzing = false;
+    let aiData = null;
+
+    // Category selection with smooth animations
+    $('.category-card').click(function() {
+        $('.category-card').removeClass('selected animate__animated animate__pulse');
+        $(this).addClass('selected animate__animated animate__pulse');
+        $('#category').val($(this).data('category'));
+    });
+
+    // Priority selection with timing display
+    $('.priority-option').click(function() {
+        $('.priority-option').removeClass('selected');
+        $(this).addClass('selected animate__animated animate__pulse');
+        $('#priority').val($(this).data('priority'));
+        
+        // Update timing display
+        const timing = $(this).find('.priority-timing').text();
+        console.log('Selected priority:', $(this).data('priority'), 'Timing:', timing);
+    });
+
+    // Enhanced AI Analysis with all functionality
+    $('#analyzeBtn').click(function() {
+        const description = $('#description').val().trim();
+        if (description.length < 10) {
+            $('#description').addClass('animate__animated animate__shakeX animate__faster');
+            setTimeout(() => $('#description').removeClass('animate__animated animate__shakeX animate__faster'), 500);
+            return alert('Please provide more details for better AI analysis! ✨');
+        }
+        
+        if (isAnalyzing) return;
+        
+        const $btn = $(this);
+        const $preview = $('#aiPreview');
+        const $submitBtn = $('#submitBtn');
+        
+        isAnalyzing = true;
+        
+        // Loading states
+        $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Analyzing...');
+        $submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Waiting...');
+        
+        // Show scanning animation
+        $preview.html(`
+            <div class="ai-panel text-center p-5 animate__animated animate__fadeIn">
+                <div class="animate__animated animate__pulse animate__infinite mb-4">
+                    <i class="fas fa-robot fa-4x text-primary"></i>
+                </div>
+                <h4 class="text-white mb-3">🤖 AI Intelligence Active</h4>
+                <div class="d-flex justify-content-center align-items-center gap-3 mb-3">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                    <span class="text-white-50">Neural networks processing your request...</span>
+                </div>
+                <div class="progress" style="height: 6px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: 45%"></div>
+                </div>
+            </div>
+        `).addClass('show');
+
+        // Simulate AI processing with realistic timing (2-4 seconds)
+        setTimeout(() => {
+            // Mock AI response - replace with your actual backend call
+            const mockResponse = {
+                ai_category: ['technical', 'billing', 'feature', 'account'][Math.floor(Math.random() * 4)],
+                ai_priority: ['low', 'medium', 'high'][Math.floor(Math.random() * 3)],
+                ai_confidence: Math.random() * 0.4 + 0.6, // 60-100%
+                type: ['bug', 'question', 'enhancement'][Math.floor(Math.random() * 3)],
+                ai_insights: "Detected critical system issue requiring immediate attention. Keywords: server, database, authentication. Similar issues resolved in 28 hours.",
+                estimated_resolution: ['24h', '48h', '3-5 days'][Math.floor(Math.random() * 3)],
+                entities: [
+                    ['server', 'SYSTEM'], ['database', 'DATABASE'], ['auth', 'AUTHENTICATION']
+                ]
+            };
+
+            aiData = mockResponse;
+            
+            // Auto-select AI recommendations
+            setTimeout(() => {
+                $('.category-card[data-category="' + mockResponse.ai_category + '"]').trigger('click');
+                $('.priority-option[data-priority="' + mockResponse.ai_priority + '"]').trigger('click');
+            }, 300);
+
+            // Build entities badges
+            let entitiesHtml = '';
+            if (mockResponse.entities && mockResponse.entities.length > 0) {
+                entitiesHtml = '<div class="mt-3"><strong>Detected:</strong><br>';
+                mockResponse.entities.forEach(ent => {
+                    entitiesHtml += `<span class="badge bg-primary bg-opacity-75 me-1 mt-1 fs-6">${ent[0]}<small class="d-block">${ent[1]}</small></span>`;
+                });
+                entitiesHtml += '</div>';
+            }
+
+            // Final AI result panel
+            $preview.html(`
+                <div class="ai-panel show card animate__animated animate__fadeIn">
+                    <div class="card-header bg-gradient text-white py-4" style="background: linear-gradient(135deg, var(--accent), var(--primary)); border: none;">
+                        <h4 class="mb-0"><i class="fas fa-brain me-3"></i>AI Analysis Complete ✅</h4>
+                    </div>
+                    <div class="card-body p-5">
+                        <div class="row g-4 mb-5">
+                            <div class="col-md-6">
+                                <h6 class="text-primary mb-3"><i class="fas fa-tag me-2"></i>Smart Category</h6>
+                                <div class="alert alert-info p-4 animate__animated animate__fadeIn">
+                                    <strong class="h5">${mockResponse.ai_category.toUpperCase()}</strong>
+                                    <div class="confidence-bar mt-3">
+                                        <div class="confidence-fill" style="--target-width: ${mockResponse.ai_confidence * 100}%"></div>
+                                    </div>
+                                    <div class="mt-2">
+                                        <small class="text-success fw-semibold">✓ ${(mockResponse.ai_confidence * 100).toFixed(1)}% Confidence</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-warning mb-3"><i class="fas fa-exclamation-triangle me-2"></i>Priority</h6>
+                                <div class="alert alert-warning p-4 text-center animate__animated animate__fadeIn">
+                                    <div class="h3 mb-1 text-danger">${mockResponse.ai_priority.toUpperCase()}</div>
+                                    <small class="text-muted">Type: ${mockResponse.type}</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row g-4">
+                            <div class="col-md-8">
+                                <h6 class="mb-3 text-info"><i class="fas fa-lightbulb me-2"></i>AI Insights</h6>
+                                <div class="alert alert-light p-4 animate__animated animate__fadeIn" style="background: rgba(255,255,255,0.15); border: none;">
+                                    ${mockResponse.ai_insights}
+                                    ${entitiesHtml}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="mb-3 text-success"><i class="fas fa-clock me-2"></i>Estimated Resolution</h6>
+                                <div class="alert alert-success text-center p-5 animate__animated animate__fadeIn">
+                                    <div class="h2 mb-1 fw-bold">${mockResponse.estimated_resolution}</div>
+                                    <small>Based on similar cases</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AI Panel Bottom Buttons -->
+                        <div class="text-center pt-4 mt-4 border-top position-sticky bottom-0 bg-dark bg-opacity-90 py-4" 
+                             style="border-color: rgba(255,255,255,0.2); border-radius: 0 0 24px 24px; backdrop-filter: blur(20px); margin: -1.5rem -3rem 0;">
+                           <button type="button" class="btn btn-gradient btn-lg px-6 py-3 me-3 fs-5 launch-ticket-btn" 
+                                   style="min-width: 180px;">
+                                <i class="fas fa-rocket me-2"></i>🚀 Launch Ticket
+                           </button>
+                           <button type="button" class="btn btn-outline-light px-5 py-3 fs-5 edit-btn" 
+                                   style="min-width: 140px;">
+                                <i class="fas fa-edit me-2"></i>Edit Form
+                           </button>
+                        </div>
+                    </div>
+                </div>
+            `);
+
+            // AI Panel button handlers
+            $('.launch-ticket-btn').click(function() {
+                $(this).html('<i class="fas fa-spinner fa-spin me-2"></i>Launching...').prop('disabled', true);
+                // Pre-fill hidden fields with AI data
+                $('#category').val(mockResponse.ai_category);
+                $('#priority').val(mockResponse.ai_priority);
+                $('#ticketForm')[0].submit();
+            });
+
+            $('.edit-btn').click(function() {
+                $preview.removeClass('show').html('');
+                $btn.prop('disabled', false).html('<i class="fas fa-brain me-2"></i>Re-Analyze');
+                $submitBtn.prop('disabled', false).html('<i class="fas fa-paper-plane me-2"></i>Create Ticket');
+                $('html, body').animate({scrollTop: 0}, 800);
+            });
+
+            isAnalyzing = false;
+            $btn.prop('disabled', false).html('<i class="fas fa-brain me-2"></i>Re-Analyze');
+            $submitBtn.prop('disabled', false).html('<i class="fas fa-paper-plane me-2"></i>Create Ticket');
+
+        }, Math.random() * 2000 + 2500); // 2.5-4.5s realistic timing
+    });
+
+    // Enhanced form submission
+    $('#ticketForm').on('submit', function(e) {
+        const title = $('#title').val().trim();
+        const description = $('#description').val().trim();
+        const category = $('#category').val();
+        const priority = $('#priority').val();
+
+        if (!title || !description) {
+            e.preventDefault();
+            $('.floating-label input, .floating-label textarea').addClass('animate__animated animate__shakeX');
+            setTimeout(() => $('.floating-label input, .floating-label textarea').removeClass('animate__animated animate__shakeX'), 500);
+            return alert('Please fill all required fields! ✨');
+        }
+
+        // Show submission feedback
+        $('#submitBtn').html('<i class="fas fa-spinner fa-spin me-2"></i>Creating Ticket...').prop('disabled', true);
+        
+        // Log form data for debugging
+        console.log('Submitting:', { title, description, category, priority });
+        return true;
+    });
+});
+</script>
+{% endblock %}

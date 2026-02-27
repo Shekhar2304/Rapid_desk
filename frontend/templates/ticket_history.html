@@ -1,0 +1,488 @@
+{% extends "layout.html" %}
+{% block title %}Ticket History - AI Ticket System{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ULTRA-VISIBLE GLASSMORPHISM - COMPACT VERSION */
+:root {
+    --glass-bg: rgba(15, 15, 35, 0.98);
+    --glass-border: rgba(255, 255, 255, 0.25);
+    --text-primary: #ffffff;
+    --text-secondary: #f8f9ff;
+    --text-muted: #d0d5e0;
+    --accent-blue: #4cc9f0;
+    --accent-purple: #a461e2;
+    --glow-blue: rgba(76, 201, 240, 0.4);
+}
+
+/* FORCE ALL TEXT VISIBLE */
+.text-primary, .text-white, .text-light, h1, h2, h3, h4, h5, h6, p, span, td, th, .fw-bold {
+    color: var(--text-primary) !important;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.8) !important;
+    font-weight: 600 !important;
+}
+
+.text-secondary, .text-muted, .text-white-50 {
+    color: var(--text-secondary) !important;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.7) !important;
+}
+
+.glass-card {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(25px);
+    border: 2px solid var(--glass-border) !important;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.glass-input {
+    background: rgba(10, 10, 30, 0.95) !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+}
+.glass-input::placeholder { color: #a0a0a0 !important; }
+.glass-input:focus {
+    border-color: var(--accent-blue) !important;
+    box-shadow: 0 0 20px var(--glow-blue) !important;
+    background: rgba(10, 10, 30, 1) !important;
+}
+
+/* COMPACT TABLE - SAME COLORS */
+.table-glass { color: var(--text-primary) !important; }
+.table-glass thead th { 
+    background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(15,15,45,1)) !important;
+    border-bottom: 2px solid var(--accent-blue) !important;
+    color: var(--text-primary) !important;
+    font-weight: 900 !important;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1.5px;
+    padding: 16px 12px !important;
+    text-shadow: 0 2px 6px rgba(0,0,0,1) !important;
+}
+
+.table-glass td { 
+    color: var(--text-primary) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.12) !important;
+    padding: 16px 12px !important;
+    vertical-align: middle;
+    font-weight: 600 !important;
+    background: rgba(0,0,0,0.25) !important;
+}
+
+/* SUBJECT & DESCRIPTION - SAME SPECIAL FIX */
+.table-glass td:nth-child(2) {
+    background: rgba(20, 20, 50, 0.95) !important;
+    color: var(--text-primary) !important;
+}
+.table-glass td:nth-child(2) div {
+    color: var(--text-primary) !important;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.9) !important;
+}
+.table-glass td:nth-child(2) .text-muted {
+    color: var(--text-secondary) !important;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.8) !important;
+}
+
+.table-glass td:nth-child(6) {
+    background: rgba(25, 25, 55, 0.95) !important;
+    color: var(--text-secondary) !important;
+    font-weight: 600 !important;
+}
+
+.table-glass tbody tr:hover { 
+    background: linear-gradient(135deg, rgba(76,201,240,0.15), rgba(164,97,226,0.1)) !important;
+    transform: scale(1.01);
+    box-shadow: 0 10px 30px rgba(76, 201, 240, 0.3);
+}
+
+/* COMPACT BADGES - SAME COLORS */
+.badge {
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.9) !important;
+    border: 2px solid rgba(255,255,255,0.4) !important;
+    padding: 8px 16px !important;
+    font-size: 0.9rem !important;
+}
+
+/* SAME STATUS BADGE COLORS */
+.status-high { 
+    background: linear-gradient(135deg, #ff4757, #ff3838) !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 20px rgba(255,71,87,0.6) !important;
+}
+.status-medium { 
+    background: linear-gradient(135deg, #ffa502, #ff9a00) !important;
+    color: #111111 !important;
+    box-shadow: 0 6px 20px rgba(255,165,2,0.6) !important;
+}
+.status-low { 
+    background: linear-gradient(135deg, #2ed573, #1dc97a) !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 20px rgba(46,213,115,0.6) !important;
+}
+.status-open { 
+    background: linear-gradient(135deg, #3742fa, #2e35f0) !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 20px rgba(55,66,250,0.6) !important;
+}
+.status-progress { 
+    background: linear-gradient(135deg, #ffa502, #ff9a00) !important;
+    color: #111111 !important;
+    box-shadow: 0 6px 20px rgba(255,165,2,0.6) !important;
+}
+.status-resolved { 
+    background: linear-gradient(135deg, #2ed573, #1dc97a) !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 20px rgba(46,213,115,0.6) !important;
+}
+.status-closed { 
+    background: linear-gradient(135deg, #747d8c, #5f6a7a) !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 20px rgba(116,125,140,0.6) !important;
+}
+
+.hero-header {
+    background: linear-gradient(135deg, rgba(164,97,226,0.4), rgba(76,201,240,0.4));
+    border: 2px solid var(--glass-border);
+    backdrop-filter: blur(25px);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue)) !important;
+    border: none !important;
+    font-weight: 800 !important;
+    box-shadow: 0 10px 30px rgba(164,97,226,0.5) !important;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(164,97,226,0.7); }
+.btn-outline-info { border-color: var(--accent-blue) !important; color: var(--accent-blue) !important; font-weight: 700; }
+.btn-outline-info:hover { background: var(--accent-blue) !important; color: #111 !important; }
+
+.pagination .page-link {
+    background: rgba(255,255,255,0.12) !important;
+    border: 2px solid var(--glass-border) !important;
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#categoryFilter, #statusFilter, #priorityFilter').change(function() {
+        $('#filterForm').submit();
+    });
+    
+    $('#searchInput').on('keypress', function(e) {
+        if (e.which === 13) $('#filterForm').submit();
+    });
+    
+    // FIXED EXPORT WITH REAL CSV DOWNLOAD
+    $('#exportBtn').click(function(e) {
+        e.preventDefault();
+        const $btn = $(this);
+        const original = $btn.html();
+        
+        // Get current filter values
+        const search = $('#searchInput').val();
+        const category = $('#categoryFilter').val();
+        const status = $('#statusFilter').val();
+        const priority = $('#priorityFilter').val();
+        
+        // Build export URL with current filters
+        const params = new URLSearchParams({
+            export: 'csv',
+            ...(search && { search }),
+            ...(category && { category }),
+            ...(status && { status }),
+            ...(priority && { priority })
+        });
+        
+        const exportUrl = `{{ url_for('ticket_history') }}?${params.toString()}`;
+        
+        // Show loading state
+        $btn.html('<i class="fas fa-spinner fa-spin me-2"></i>Exporting...').prop('disabled', true);
+        
+        // Create and trigger download
+        const link = document.createElement('a');
+        link.href = exportUrl;
+        link.setAttribute('download', `tickets_export_${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Reset button
+        setTimeout(() => {
+            $btn.html(original).prop('disabled', false);
+        }, 1200);
+    });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- COMPACT HERO - SAME COLORS -->
+    <div class="row mb-4 hero-header p-4 rounded-3 glass-card">
+        <div class="col-md-8">
+            <h2 class="fw-bold mb-2" style="font-size: 2.2rem;">
+                <i class="fas fa-history me-3" style="color: var(--accent-blue); font-size: 2.2rem;"></i>
+                Ticket Command Center
+            </h2>
+            <p class="fs-6 fw-medium mb-0">Master your support requests with AI-powered filtering</p>
+        </div>
+        <div class="col-md-4 text-md-end text-center mt-3 mt-md-0">
+            <a href="{{ url_for('create_ticket') }}" class="btn btn-primary px-5 py-3 rounded-pill fs-6 fw-bold shadow-lg">
+                <i class="fas fa-plus-circle me-2"></i>New Smart Ticket
+            </a>
+        </div>
+    </div>
+
+    <!-- COMPACT FILTERS -->
+    <form id="filterForm" method="GET" action="{{ url_for('ticket_history') }}">
+        <div class="glass-card mb-4 p-4">
+            <div class="row g-3 align-items-end">
+                <div class="col-xl-4 col-lg-6">
+                    <label class="form-label fw-bold mb-3 fs-6">🔍 Search Everything</label>
+                    <div class="input-group">
+                        <span class="input-group-text glass-input border-end-0">
+                            <i class="fas fa-search text-info fs-5"></i>
+                        </span>
+                        <input type="text" name="search" id="searchInput" class="form-control glass-input border-start-0 fs-6" 
+                               placeholder="Ticket ID, title, description..." value="{{ search }}">
+                        <button type="submit" class="btn btn-outline-info px-4 fw-bold fs-6">
+                            <i class="fas fa-arrow-right me-1"></i>Search
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="col-xl-2 col-lg-3 col-md-6">
+                    <label class="form-label fw-bold mb-3 fs-6">📂 Category</label>
+                    <select name="category" id="categoryFilter" class="form-select glass-input h-100 fs-6">
+                        <option value="">All Categories</option>
+                        {% for cat in categories %}
+                        <option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>{{ cat|title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-xl-2 col-lg-3 col-md-6">
+                    <label class="form-label fw-bold mb-3 fs-6">📊 Status</label>
+                    <select name="status" id="statusFilter" class="form-select glass-input h-100 fs-6">
+                        <option value="">All Statuses</option>
+                        <option value="open" {% if selected_status == 'open' %}selected{% endif %}>Open</option>
+                        <option value="in_progress" {% if selected_status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                        <option value="resolved" {% if selected_status == 'resolved' %}selected{% endif %}>Resolved</option>
+                        <option value="closed" {% if selected_status == 'closed' %}selected{% endif %}>Closed</option>
+                    </select>
+                </div>
+                
+                <div class="col-xl-2 col-lg-3 col-md-6">
+                    <label class="form-label fw-bold mb-3 fs-6">⚡ Priority</label>
+                    <select name="priority" id="priorityFilter" class="form-select glass-input h-100 fs-6">
+                        <option value="">All Priorities</option>
+                        <option value="low" {% if selected_priority == 'low' %}selected{% endif %}>Low</option>
+                        <option value="medium" {% if selected_priority == 'medium' %}selected{% endif %}>Medium</option>
+                        <option value="high" {% if selected_priority == 'high' %}selected{% endif %}>High</option>
+                    </select>
+                </div>
+                
+                <div class="col-xl-2 col-lg-3 col-md-6">
+                    <label class="form-label fw-bold mb-3 fs-6 d-none d-md-block">📥 Export</label>
+                    <button type="button" id="exportBtn" class="btn btn-outline-info w-100 h-100 px-4 py-3 fw-bold fs-6">
+                        <i class="fas fa-download me-2"></i>Export Data
+                    </button>
+                </div>
+            </div>
+            
+            {% if search or selected_category or selected_status or selected_priority %}
+            <div class="mt-4 pt-3 border-top" style="border-color: rgba(255,255,255,0.2) !important;">
+                <a href="{{ url_for('ticket_history') }}" class="btn btn-outline-light px-4 py-2 rounded-pill fw-bold fs-6">
+                    <i class="fas fa-times-circle me-2"></i>Clear All Filters
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </form>
+
+    <!-- COMPACT TICKETS TABLE - SAME CONTENT & COLORS -->
+    {% if tickets %}
+    <div class="glass-card p-0 overflow-hidden mb-4">
+        <div class="table-responsive">
+            <table class="table table-hover table-glass mb-0">
+                <thead>
+                    <tr>
+                        <th class="ps-4"><i class="fas fa-hashtag me-2 text-info fs-4"></i>ID</th>
+                        <th><i class="fas fa-heading me-2 text-primary fs-4"></i>Subject</th>
+                        <th><i class="fas fa-folder me-2 text-secondary fs-4"></i>Category</th>
+                        <th><i class="fas fa-bolt me-2 text-warning fs-4"></i>Priority</th>
+                        <th><i class="fas fa-circle-notch me-2 text-info fs-4"></i>Status</th>
+                        <th><i class="fas fa-calendar me-2 text-light fs-4"></i>Created</th>
+                        <th class="text-center"><i class="fas fa-robot me-2 text-success fs-4"></i>AI</th>
+                        <th class="text-end pe-4"><i class="fas fa-cogs me-2 text-light fs-4"></i>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ticket in tickets %}
+                    <tr>
+                        <td class="ps-4">
+                            <span class="badge bg-info text-dark px-4 py-2 fw-bold fs-6">#{{ ticket.ticket_id }}</span>
+                        </td>
+                        <td class="align-middle">
+                            <div class="fw-bold fs-6 mb-1" style="max-width: 280px;" title="{{ ticket.title }}">
+                                {{ ticket.title[:50] }}{% if ticket.title|length > 50 %}...{% endif %}
+                            </div>
+                            <div class="text-secondary fs-6 fw-medium" style="max-width: 280px; line-height: 1.4;" title="{{ ticket.description }}">
+                                {{ ticket.description[:75] }}{% if ticket.description|length > 75 %}...{% endif %}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-dark px-4 py-3 rounded-pill fw-bold fs-6 border border-light border-opacity-40">
+                                {{ ticket.category|title }}
+                            </span>
+                        </td>
+                        <td>
+                            {% set t_pri = ticket.priority|lower|trim %}
+                            {% if t_pri == 'high' %}
+                                <span class="badge status-high px-4 py-3 rounded-pill fs-6 shadow-lg">
+                                    <i class="fas fa-bolt me-1"></i>High
+                                </span>
+                            {% elif t_pri == 'medium' %}
+                                <span class="badge status-medium px-4 py-3 rounded-pill fs-6 shadow-lg">
+                                    <i class="fas fa-minus me-1"></i>Medium
+                                </span>
+                            {% else %}
+                                <span class="badge status-low px-4 py-3 rounded-pill fs-6 shadow-lg">
+                                    <i class="fas fa-check me-1"></i>Low
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% set t_status = ticket.status|lower|trim %}
+                            {% if t_status == 'open' %}
+                                <span class="badge status-open px-4 py-3 rounded-pill fs-6 shadow-lg">
+                                    <i class="fas fa-folder-open me-1"></i>Open
+                                </span>
+                            {% elif t_status == 'in_progress' %}
+                                <span class="badge status-progress px-4 py-3 rounded-pill fs-6 shadow-lg">
+                                    <i class="fas fa-spinner fa-spin me-1"></i>In Progress
+                                </span>
+                            {% elif t_status == 'resolved' %}
+                                <span class="badge status-resolved px-4 py-3 rounded-pill fs-6 shadow-lg">
+                                    <i class="fas fa-check-circle me-1"></i>Resolved
+                                </span>
+                            {% elif t_status == 'closed' %}
+                                <span class="badge status-closed px-4 py-3 rounded-pill fs-6 shadow-lg">
+                                    <i class="fas fa-lock me-1"></i>Closed
+                                </span>
+                            {% else %}
+                                <span class="badge bg-light text-dark px-4 py-3 rounded-pill fs-6">{{ ticket.status|title }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="fw-bold fs-6">
+                            {{ ticket.created_at.strftime('%b %d, %Y') if ticket.created_at else 'Just now' }}
+                        </td>
+                        <td class="text-center">
+                            {% if ticket.ai_category %}
+                                <span class="badge bg-success px-3 py-2 rounded-pill fw-bold fs-6 shadow-lg" 
+                                      title="AI Confidence: {{ ((ticket.ai_confidence or 0) * 100)|round(1) }}%">
+                                    <i class="fas fa-robot me-1"></i>AI
+                                </span>
+                            {% else %}
+                                <span class="badge bg-secondary px-3 py-2 rounded-pill text-secondary fs-6">-</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end pe-4">
+                            <div class="dropdown">
+                                <button class="btn btn-outline-light dropdown-toggle rounded-pill px-4 py-2 fw-bold border-2 fs-6" 
+                                        type="button" data-bs-toggle="dropdown" style="border-color: var(--accent-blue) !important;">
+                                    <i class="fas fa-ellipsis-v me-1"></i>Actions
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-dark shadow-lg border-0" style="background: var(--glass-bg); border: 2px solid var(--glass-border); min-width: 200px;">
+                                    <li>
+                                        <a class="dropdown-item fw-bold text-info py-3 fs-6" href="{{ url_for('view_ticket', ticket_id=ticket.ticket_id) }}">
+                                            <i class="fas fa-eye me-3 text-info"></i><strong>View Details</strong>
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider my-0" style="border-color: rgba(255,255,255,0.2);"></li>
+                                    <li>
+                                        <a class="dropdown-item fw-bold py-3 fs-6" href="mailto:support@example.com?subject=Re:%20{{ ticket.ticket_id }}">
+                                            <i class="fas fa-envelope me-3 text-primary"></i>Email Support
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- COMPACT FOOTER -->
+        <div class="row g-3 align-items-center p-4" style="border-top: 1px solid rgba(255,255,255,0.15);">
+            <div class="col-md-6">
+                <div style="color: var(--text-secondary) !important;">
+                    <i class="fas fa-list me-2 fs-5"></i>
+                    <strong style="color: var(--text-primary) !important;">{{ tickets|length }}</strong> 
+                    ticket{{ 's' if tickets|length != 1 else '' }} found 
+                    <span style="color: var(--text-muted) !important;">(Page 1 of 1)</span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <nav aria-label="Ticket pagination">
+                    <ul class="pagination justify-content-end mb-0">
+                        <li class="page-item disabled">
+                            <a class="page-link px-3 py-2 fs-6" href="#" tabindex="-1">
+                                <i class="fas fa-chevron-left me-1"></i>Previous
+                            </a>
+                        </li>
+                        <li class="page-item active">
+                            <a class="page-link px-3 py-2 fs-6 fw-bold" href="#">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link px-3 py-2 fs-6" href="#">
+                                Next <i class="fas fa-chevron-right ms-1"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <!-- COMPACT EMPTY STATE - SAME COLORS -->
+    <div class="glass-card text-center py-8 mb-4">
+        <div class="mb-4">
+            <div class="d-inline-flex align-items-center justify-content-center rounded-circle mx-auto mb-4 shadow-lg" 
+                 style="width: 140px; height: 140px; background: linear-gradient(135deg, rgba(76,201,240,0.25), rgba(164,97,226,0.25)); border: 3px solid var(--glass-border);">
+                <i class="fas fa-ticket-alt fa-4x" style="color: var(--accent-blue);"></i>
+            </div>
+        </div>
+        <h3 class="fw-bold mb-4 fs-2" style="color: var(--text-primary) !important;">Empty Inbox</h3>
+        <p class="text-secondary mb-5 mx-auto fs-5 fw-semibold" style="max-width: 500px; line-height: 1.6;">
+            {% if search or selected_category or selected_status or selected_priority %}
+                No tickets match your current filters. 
+            {% else %}
+                You're all caught up! No support tickets created yet.
+            {% endif %}
+        </p>
+        
+        <div class="d-flex flex-column flex-md-row gap-3 justify-content-center align-items-center">
+            {% if search or selected_category or selected_status or selected_priority %}
+            <a href="{{ url_for('ticket_history') }}" class="btn btn-outline-light px-5 py-3 rounded-pill fw-bold fs-6 border-3 shadow-lg">
+                <i class="fas fa-times-circle me-2"></i>Clear Filters
+            </a>
+            {% endif %}
+            <a href="{{ url_for('create_ticket') }}" class="btn btn-primary px-5 py-3 rounded-pill fw-bold fs-6 shadow-lg">
+                <i class="fas fa-plus-circle me-2"></i>Create First Ticket
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

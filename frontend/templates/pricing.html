@@ -1,0 +1,262 @@
+{% extends "layout.html" %}
+{% block title %}Pricing - Transparent AI Ticketing Plans{% endblock %}
+
+{% block extra_css %}
+<style>
+.pricing-hero {
+    background: linear-gradient(135deg, rgba(164,97,226,0.15), rgba(76,201,240,0.15));
+    padding: 120px 0;
+    text-align: center;
+}
+
+.pricing-hero h1 {
+    font-size: clamp(3rem, 6vw, 4.5rem);
+    font-weight: 950;
+    background: linear-gradient(135deg, #ffffff, #a461e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 48px;
+    max-width: 1400px;
+    margin: 100px auto;
+    padding: 0 24px;
+}
+
+.pricing-card {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(30px);
+    border-radius: 32px;
+    padding: 80px 48px;
+    border: 1px solid rgba(255,255,255,0.2);
+    text-align: center;
+    transition: all 0.5s cubic-bezier(0.4,0,0.2,1);
+    position: relative;
+    overflow: hidden;
+}
+
+.pricing-card.popular {
+    background: linear-gradient(135deg, rgba(164,97,226,0.25), rgba(76,201,240,0.25));
+    border-color: rgba(164,97,226,0.4);
+    transform: scale(1.05);
+}
+
+.pricing-card.popular .popular-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    color: white;
+    padding: 8px 32px;
+    border-radius: 24px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    box-shadow: 0 8px 24px rgba(255,107,107,0.4);
+}
+
+.pricing-price {
+    font-size: 5rem;
+    font-weight: 950;
+    background: linear-gradient(135deg, #a461e2, #4cc9f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 24px 0 16px;
+}
+
+.pricing-features {
+    list-style: none;
+    padding: 0;
+    margin: 48px 0;
+}
+
+.pricing-features li {
+    padding: 16px 0;
+    color: rgba(255,255,255,0.9);
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.pricing-features li:last-child { border-bottom: none; }
+
+.pricing-cta {
+    padding: 24px 48px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border-radius: 28px;
+    text-decoration: none;
+    display: block;
+    transition: all 0.4s ease;
+    margin-top: 32px;
+}
+
+.cta-primary {
+    background: linear-gradient(135deg, #a461e2, #4cc9f0);
+    color: white;
+    box-shadow: 0 20px 40px rgba(164,97,226,0.4);
+}
+
+.cta-secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255,255,255,0.6);
+}
+
+.toggle-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    margin: 40px 0;
+}
+
+.toggle-switch input[type="checkbox"] {
+    display: none;
+}
+
+.toggle-slider {
+    width: 60px;
+    height: 32px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.toggle-slider::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 26px;
+    height: 26px;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background: linear-gradient(135deg, #a461e2, #4cc9f0);
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+    transform: translateX(28px);
+}
+
+@media (max-width: 768px) {
+    .pricing-grid { grid-template-columns: 1fr; }
+    .pricing-card { margin-bottom: 32px; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="pricing-hero">
+    <div class="container">
+        <h1>Simple. Transparent. Pricing.</h1>
+        <p class="lead" style="color: rgba(255,255,255,0.9); font-size: 1.4rem; max-width: 600px; margin: 24px auto 0;">
+            Start free. Scale without limits. Cancel anytime.
+        </p>
+        
+        <div class="toggle-switch">
+            <span style="color: rgba(255,255,255,0.8);">Monthly</span>
+            <input type="checkbox" id="billing-toggle">
+            <label for="billing-toggle" class="toggle-slider"></label>
+            <span style="color: rgba(255,255,255,0.8);">Yearly <strong>(Save 20%)</strong></span>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="pricing-grid">
+        <div class="pricing-card">
+            <h3 style="font-size: 2rem; font-weight: 800; color: white; margin-bottom: 24px;">Starter</h3>
+            <div class="pricing-price">$<span class="amount" data-monthly="29" data-yearly="23">29</span><small>/agent/mo</small></div>
+            <p style="color: rgba(255,255,255,0.7); margin: 8px 0 48px;">Perfect for small teams</p>
+            
+            <ul class="pricing-features">
+                <li><i class="fas fa-check text-success me-2"></i>Unlimited AI categorization</li>
+                <li><i class="fas fa-check text-success me-2"></i>5 integrations</li>
+                <li><i class="fas fa-check text-success me-2"></i>Email support</li>
+                <li><i class="fas fa-check text-success me-2"></i>10K tickets/month</li>
+                <li><i class="fas fa-times text-muted me-2"></i>Custom workflows</li>
+            </ul>
+            
+            <a href="{{ url_for('register') }}" class="pricing-cta cta-primary">
+                Start Free Trial
+            </a>
+        </div>
+        
+        <div class="pricing-card popular">
+            <div class="popular-badge">Most Popular</div>
+            <h3 style="font-size: 2rem; font-weight: 800; color: white; margin-bottom: 24px;">Pro</h3>
+            <div class="pricing-price">$<span class="amount" data-monthly="79" data-yearly="63">79</span><small>/agent/mo</small></div>
+            <p style="color: white; margin: 8px 0 48px;">Best for growing teams</p>
+            
+            <ul class="pricing-features">
+                <li><i class="fas fa-check text-success me-2"></i>Everything in Starter</li>
+                <li><i class="fas fa-check text-success me-2"></i>50+ integrations</li>
+                <li><i class="fas fa-check text-success me-2"></i>Priority support</li>
+                <li><i class="fas fa-check text-success me-2"></i>Unlimited tickets</li>
+                <li><i class="fas fa-check text-success me-2"></i>Custom workflows</li>
+                <li><i class="fas fa-check text-success me-2"></i>Dedicated onboarding</li>
+            </ul>
+            
+            <a href="{{ url_for('register') }}" class="pricing-cta cta-primary">
+                Get Pro Plan
+            </a>
+        </div>
+        
+        <div class="pricing-card">
+            <h3 style="font-size: 2rem; font-weight: 800; color: white; margin-bottom: 24px;">Enterprise</h3>
+            <div class="pricing-price" style="color: white; font-size: 3.5rem;">Custom</div>
+            <p style="color: rgba(255,255,255,0.7); margin: 8px 0 48px;">For large organizations</p>
+            
+            <ul class="pricing-features">
+                <li><i class="fas fa-check text-success me-2"></i>Everything in Pro</li>
+                <li><i class="fas fa-check text-success me-2"></i>150+ integrations</li>
+                <li><i class="fas fa-check text-success me-2"></i>24/7 support</li>
+                <li><i class="fas fa-check text-success me-2"></i>Custom AI models</li>
+                <li><i class="fas fa-check text-success me-2"></i>SSO & VPC</li>
+                <li><i class="fas fa-check text-success me-2"></i>Personal account team</li>
+            </ul>
+            
+            <a href="{{ url_for('contact') }}" class="pricing-cta cta-secondary">
+                Contact Sales
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="text-center py-5" style="background: rgba(0,0,0,0.3); margin: 80px 0;">
+    <div class="container">
+        <h3 style="color: white; font-size: 2rem; margin-bottom: 24px;">Not sure which plan?</h3>
+        <p style="color: rgba(255,255,255,0.8); font-size: 1.2rem; margin-bottom: 32px;">
+            All plans include 14-day free trial. No credit card required.
+        </p>
+        <a href="{{ url_for('contact') }}" class="btn btn-outline-light btn-lg px-5" style="border-radius: 28px;">
+            📞 Talk to Expert
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const toggle = document.getElementById('billing-toggle');
+    const amounts = document.querySelectorAll('.amount');
+    
+    toggle.addEventListener('change', function() {
+        amounts.forEach(amount => {
+            const monthly = amount.dataset.monthly;
+            const yearly = amount.dataset.yearly;
+            amount.textContent = this.checked ? yearly : monthly;
+        });
+    });
+});
+</script>
+{% endblock %}

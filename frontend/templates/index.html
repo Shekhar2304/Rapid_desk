@@ -1,0 +1,608 @@
+{% extends "layout.html" %}
+{% block title %}AI-Powered Ticket Creation & Categorization{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* ================= GLOBAL & LAYOUT ================= */
+:root {
+    --text-main: rgba(255, 255, 255, 0.9);
+    --text-muted: rgba(255, 255, 255, 0.75);
+}
+
+body {
+    font-size: 16px; /* Standardize base font size */
+    line-height: 1.6;
+}
+
+/* ================= HERO SECTION ================= */
+.hero-section {
+    min-height: 85vh; /* Reduced from 100vh for better fold visibility */
+    background: linear-gradient(135deg, rgba(15,12,41,0.98), rgba(48,43,99,0.92));
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    padding: 120px 0 80px 0;
+}
+
+.hero-bg-animation {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(164,97,226,0.2) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(76,201,240,0.2) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(0,212,170,0.15) 0%, transparent 50%);
+    animation: heroBgPulse 12s ease-in-out infinite;
+}
+
+@keyframes heroBgPulse { 
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+
+.hero-container {
+    position: relative;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 1fr 450px; /* Reduced image column width */
+    gap: 60px; /* Reduced from 120px */
+    max-width: 1200px; /* Reduced from 1600px for tighter read */
+    margin: 0 auto;
+    padding: 0 24px;
+    align-items: center;
+}
+
+.hero-content h1 {
+    font-size: clamp(2.5rem, 4.5vw, 3.8rem); /* Much more reasonable H1 size */
+    font-weight: 850;
+    line-height: 1.15;
+    background: linear-gradient(135deg, #ffffff 0%, #f0e6ff 30%, #a461e2 60%, #4cc9f0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+}
+
+.typed-text-wrapper {
+    background: linear-gradient(135deg, #a461e2, #4cc9f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    min-width: 180px; 
+}
+
+.hero-subtitle {
+    font-size: 1.15rem; /* Reduced from 1.6rem */
+    color: var(--text-main);
+    margin-bottom: 32px;
+    max-width: 550px;
+    font-weight: 400;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 32px; /* Tighter grouping */
+    margin: 32px 0 40px;
+    flex-wrap: wrap;
+}
+
+.stat-item { text-align: left; }
+
+.stat-number {
+    font-size: 2rem; /* Reduced from 2.8rem */
+    font-weight: 800;
+    background: linear-gradient(135deg, #a461e2, #4cc9f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.hero-buttons-main {
+    display: flex;
+    gap: 16px; /* Closer buttons */
+    flex-wrap: wrap;
+}
+
+.btn-hero-primary, .btn-hero-secondary {
+    padding: 16px 32px; /* Standard button size */
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 24px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-hero-primary {
+    background: linear-gradient(135deg, #a461e2 0%, #4cc9f0 100%);
+    color: white;
+    box-shadow: 0 12px 24px rgba(164,97,226,0.3);
+}
+
+.btn-hero-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgba(164,97,226,0.5);
+    color: white;
+}
+
+.btn-hero-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-hero-secondary:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+}
+
+.hero-mockup-main {
+    width: 100%;
+    border-radius: 24px; /* Slightly tighter border radius */
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+    animation: mockupFloat 7s ease-in-out infinite;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+@keyframes mockupFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.hero-mockup-badge {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    box-shadow: 0 10px 20px rgba(255,107,107,0.3);
+}
+
+/* ================= FEATURES SECTION ================= */
+.features-section {
+    padding: 100px 0; /* Reduced from 160px */
+    background: rgba(15,12,41,0.5);
+}
+
+.section-title {
+    font-size: clamp(2rem, 4vw, 2.8rem); /* Scaled down */
+    font-weight: 850;
+    background: linear-gradient(135deg, #ffffff, #a461e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+}
+
+.section-subtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 64px; /* Tighter bottom margin */
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 3-4 columns instead of 2 massive ones */
+    gap: 32px; /* Tighter gap */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 40px 32px; /* Reduced from 80x60 */
+    border: 1px solid rgba(255,255,255,0.1);
+    text-align: left; /* Changed to left align for a more formal reading experience */
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(164,97,226,0.3);
+}
+
+.feature-icon {
+    width: 64px; /* Reduced from 140px */
+    height: 64px;
+    background: linear-gradient(135deg, rgba(164,97,226,0.2), rgba(76,201,240,0.2));
+    border: 1px solid rgba(164,97,226,0.3);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    font-size: 1.5rem;
+    color: #4cc9f0;
+}
+
+.feature-title {
+    font-size: 1.3rem; /* Scaled down */
+    font-weight: 700;
+    color: white;
+    margin-bottom: 12px;
+}
+
+.feature-desc {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ================= WORKFLOW SECTION ================= */
+.workflow-section {
+    padding: 100px 0;
+    background: linear-gradient(135deg, rgba(0,212,170,0.05), rgba(48,43,99,0.2));
+}
+
+.workflow-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.workflow-timeline {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px; /* Reduced gap */
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.workflow-timeline::before {
+    content: '';
+    position: absolute;
+    top: 32px; /* Adjusted for smaller circles */
+    left: 10%;
+    right: 10%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, rgba(164,97,226,0.5), rgba(76,201,240,0.5), transparent);
+    border-radius: 2px;
+    z-index: 1;
+}
+
+.workflow-step {
+    flex: 1;
+    min-width: 200px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.workflow-number {
+    width: 64px; /* Reduced from 120px */
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #a461e2, #4cc9f0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+    box-shadow: 0 10px 20px rgba(164,97,226,0.3);
+}
+
+.workflow-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 12px;
+}
+
+.workflow-desc {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    max-width: 220px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* ================= CTA SECTION ================= */
+.cta-section {
+    padding: 100px 0;
+    background: linear-gradient(135deg, #302b63, #0f0c29);
+    text-align: center;
+    position: relative;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.cta-title {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 850;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.cta-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Animation Utilities */
+.scroll-hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+    .hero-container { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+    .hero-subtitle { margin: 0 auto 32px auto; }
+    .hero-stats { justify-content: center; }
+    .stat-item { text-align: center; }
+    .hero-buttons-main { justify-content: center; }
+    .hero-mockup-main { max-width: 500px; margin: 0 auto; }
+    .workflow-timeline { gap: 60px; }
+    .workflow-timeline::before { display: none; }
+}
+
+@media (max-width: 768px) {
+    .hero-stats { gap: 24px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .btn-hero-primary, .btn-hero-secondary { width: 100%; justify-content: center; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-bg-animation"></div>
+    <div class="hero-container">
+        <div class="hero-content">
+            <h1 class="animate__animated animate__fadeInDown">
+                World's Most <span class="typed-text-wrapper"><span id="typed-text"></span></span><br>Ticketing Platform
+            </h1>
+            
+            <p class="hero-subtitle animate__animated animate__fadeInUp animate__delay-1s">
+                Transform chaotic support workflows into <strong>intelligent automation</strong>. 
+                Automatically categorize, prioritize, and route tickets with <strong>96.8% accuracy</strong>.
+            </p>
+            
+            <div class="hero-stats animate__animated animate__fadeInUp animate__delay-1s">
+                <div class="stat-item">
+                    <span class="stat-number">96.8%</span>
+                    <span class="stat-label">Accuracy</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">67%</span>
+                    <span class="stat-label">Faster Resolution</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">15K+</span>
+                    <span class="stat-label">Active Users</span>
+                </div>
+            </div>
+            
+            <div class="hero-buttons-main animate__animated animate__fadeInUp animate__delay-1s">
+                <a href="{{ url_for('register') }}" class="btn-hero-primary">
+                    <i class="fas fa-rocket"></i> Start Free 14-Day Trial
+                </a>
+                <a href="{{ url_for('pricing') }}" class="btn-hero-secondary">
+                    View All Plans
+                </a>
+            </div>
+        </div>
+        
+        <div class="animate__animated animate__fadeInRight animate__delay-1s" style="position: relative;">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                 alt="AI Ticket Intelligence Dashboard" class="hero-mockup-main">
+            <div class="hero-mockup-badge">Enterprise Ready</div>
+        </div>
+    </div>
+</div>
+
+<section class="features-section" id="features">
+    <div class="container px-4">
+        <h2 class="section-title scroll-hidden">Complete Enterprise AI Suite</h2>
+        <p class="section-subtitle scroll-hidden">
+            Trusted by modern teams worldwide. Powerful tools scaled for startups to Fortune 500s.
+        </p>
+        
+        <div class="features-grid">
+            <div class="feature-card scroll-hidden">
+                <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                <h3 class="feature-title">Intelligent Categorization</h3>
+                <p class="feature-desc">
+                    Advanced NLP processes natural language across <strong>28+ languages</strong>. Eliminates manual tagging completely.
+                </p>
+            </div>
+            
+            <div class="feature-card scroll-hidden">
+                <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                <h3 class="feature-title">Smart Prioritization</h3>
+                <p class="feature-desc">
+                    Real-time urgency detection identifies VIP customers and critical issues instantly for faster routing.
+                </p>
+            </div>
+            
+            <div class="feature-card scroll-hidden">
+                <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                <h3 class="feature-title">Auto-Resolution Engine</h3>
+                <p class="feature-desc">
+                    Automatically resolve repetitive tickets with AI-generated solutions. Let agents focus on complex issues.
+                </p>
+            </div>
+            
+            <div class="feature-card scroll-hidden">
+                <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3 class="feature-title">Enterprise Security</h3>
+                <p class="feature-desc">
+                    GDPR, HIPAA, and SOC 2 compliant. Includes full audit trails, SSO, VPC deployment, and end-to-end encryption.
+                </p>
+            </div>
+            
+            <div class="feature-card scroll-hidden">
+                <div class="feature-icon"><i class="fas fa-plug"></i></div>
+                <h3 class="feature-title">150+ Integrations</h3>
+                <p class="feature-desc">
+                    Bi-directional sync with Zendesk, Jira, Slack, Salesforce, ServiceNow, and all major platforms.
+                </p>
+            </div>
+            
+            <div class="feature-card scroll-hidden">
+                <div class="feature-icon"><i class="fas fa-infinity"></i></div>
+                <h3 class="feature-title">Unlimited Scale</h3>
+                <p class="feature-desc">
+                    Process millions of tickets monthly with zero latency. Built for high-volume enterprise pipelines from day one.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="workflow-section">
+    <div class="container px-4">
+        <h2 class="section-title scroll-hidden" style="color: white;">The 4-Second Workflow</h2>
+        <p class="section-subtitle scroll-hidden">
+            From raw customer request to perfectly routed ticket in under 4 seconds.
+        </p>
+        
+        <div class="workflow-container">
+            <div class="workflow-timeline">
+                <div class="workflow-step scroll-hidden">
+                    <div class="workflow-number">1</div>
+                    <h4 class="workflow-title">Natural Input</h4>
+                    <p class="workflow-desc">
+                        Customers describe issues in plain English. No forms needed.
+                    </p>
+                </div>
+                
+                <div class="workflow-step scroll-hidden">
+                    <div class="workflow-number">2</div>
+                    <h4 class="workflow-title">AI Intelligence</h4>
+                    <p class="workflow-desc">
+                        Models analyze content, sentiment, urgency, and technical keywords.
+                    </p>
+                </div>
+                
+                <div class="workflow-step scroll-hidden">
+                    <div class="workflow-number">3</div>
+                    <h4 class="workflow-title">Smart Routing</h4>
+                    <p class="workflow-desc">
+                        Perfect category, priority assignment, and matching automatically.
+                    </p>
+                </div>
+                
+                <div class="workflow-step scroll-hidden">
+                    <div class="workflow-number">4</div>
+                    <h4 class="workflow-title">Resolution</h4>
+                    <p class="workflow-desc">
+                        AI insights and seamless handoff to the exact right expert.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="container position-relative px-4">
+        <h2 class="cta-title scroll-hidden">Ready to Transform Your Support?</h2>
+        <p class="cta-subtitle scroll-hidden">
+            Join thousands of companies automating their workflows at enterprise scale. 
+            <strong>14-day free trial. No credit card required.</strong>
+        </p>
+        <div class="hero-buttons-main justify-content-center scroll-hidden">
+            <a href="{{ url_for('register') }}" class="btn-hero-primary">
+                🚀 Start Free Trial Now
+            </a>
+            <a href="{{ url_for('contact') }}" class="btn-hero-secondary">
+                Book Enterprise Demo
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    if(document.getElementById('typed-text')) {
+        new Typed('#typed-text', {
+            strings: ['Intelligent', 'Automated', 'Fast', 'Powerful'],
+            typeSpeed: 60,
+            backSpeed: 40,
+            backDelay: 2000,
+            loop: true,
+            showCursor: true,
+            cursorChar: '|'
+        });
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    const observerOptions = {
+        threshold: 0.15,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.remove('scroll-hidden');
+                entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    const animatedElements = document.querySelectorAll('.feature-card, .workflow-step, .section-title, .section-subtitle, .cta-title, .cta-subtitle, .cta-section .hero-buttons-main');
+    
+    animatedElements.forEach((el, index) => {
+        let staggerDelay = (index % 3) * 0.15; 
+        el.style.animationDelay = `${staggerDelay}s`;
+        observer.observe(el);
+    });
+});
+</script>
+{% endblock %}

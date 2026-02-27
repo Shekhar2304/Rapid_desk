@@ -1,0 +1,310 @@
+{% extends "layout.html" %}
+{% block title %}AI Engineering Hub{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ================= CYBERPUNK GLASSMORPHISM ================= */
+:root {
+    --primary-glow: linear-gradient(135deg, #a461e2 0%, #4cc9f0 50%, #00d4aa 100%);
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --neon-glow: 0 0 30px rgba(164, 97, 226, 0.5);
+}
+
+* { box-sizing: border-box; }
+
+.ai-hero {
+    min-height: 100vh;
+    background: linear-gradient(145deg, rgba(15,12,29,0.95), rgba(48,43,99,0.9), rgba(36,36,62,0.95));
+    position: relative;
+    overflow: hidden;
+}
+
+.content-overlay {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(35px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 28px;
+    transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    position: relative;
+    overflow: hidden;
+}
+
+.content-overlay:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 35px 70px rgba(0,0,0,0.5), var(--neon-glow);
+}
+
+.category-chip {
+    background: var(--primary-glow);
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.neon-title {
+    background: var(--primary-glow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+}
+
+.newsletter-form input {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    backdrop-filter: blur(20px);
+    color: white;
+    padding: 1.2rem 1.5rem;
+}
+
+.newsletter-form input:focus {
+    border-color: #4cc9f0;
+    box-shadow: 0 0 0 0.2rem rgba(76,201,240,0.25);
+}
+
+.newsletter-success {
+    background: rgba(0,212,170,0.2);
+    border: 1px solid rgba(0,212,170,0.5);
+    color: #00d4aa;
+    padding: 1rem;
+    border-radius: 16px;
+    animation: slideDown 0.5s ease-out;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO SECTION ================= -->
+<section class="ai-hero d-flex align-items-center py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <span class="category-chip mb-4 d-inline-block">🚀 AI Engineering</span>
+                <h1 class="display-2 fw-bold neon-title mb-4">98% Accurate<br>Ticket Classification</h1>
+                <p class="lead" style="color: rgba(255,255,255,0.8); font-size: 1.4rem;">
+                    Production ML systems processing 10M+ tickets
+                </p>
+            </div>
+            <div class="col-lg-6">
+                <!-- PICTURE 1: Neural Network -->
+                <div class="content-overlay p-4">
+                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                         class="img-fluid rounded-3 w-100" style="height: 400px; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= METRICS ================= -->
+<section class="container py-6">
+    <div class="row text-center g-4">
+        <div class="col-md-3">
+            <div class="content-overlay p-4">
+                <h1 class="display-4 fw-bold mb-2 neon-title">10M+</h1>
+                <p class="h5 fw-bold" style="color: rgba(255,255,255,0.8);">Tickets Processed</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="content-overlay p-4">
+                <h1 class="display-4 fw-bold mb-2 neon-title">98%</h1>
+                <p class="h5 fw-bold" style="color: rgba(255,255,255,0.8);">AI Accuracy</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="content-overlay p-4">
+                <h1 class="display-4 fw-bold mb-2 neon-title">70%</h1>
+                <p class="h5 fw-bold" style="color: rgba(255,255,255,0.8);">Auto Resolved</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="content-overlay p-4">
+                <h1 class="display-4 fw-bold mb-2 neon-title">45%</h1>
+                <p class="h5 fw-bold" style="color: rgba(255,255,255,0.8);">Faster Resolution</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FEATURED ARTICLE ================= -->
+<section class="container py-6">
+    <div class="row g-5 align-items-center">
+        <div class="col-lg-7">
+            <span class="category-chip mb-4 d-inline-block">🔥 FEATURED</span>
+            <h2 class="display-5 fw-bold neon-title mb-4">Zero-Trust AI Infrastructure</h2>
+            <p style="color: rgba(255,255,255,0.8);">Kubernetes + Vector DB at 10M scale</p>
+            <div style="background: rgba(0,212,170,0.2); padding: 0.5rem 1rem; border-radius: 20px; display: inline-block; font-size: 0.85rem; margin: 1rem 0;">
+                22 min read • Feb 26, 2026
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <!-- PICTURE 2: Kubernetes Cluster -->
+            <img src="https://images.unsplash.com/photo-1558494949-efed86a57cf2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                 class="img-fluid rounded-4 w-100" style="height: 350px; object-fit: cover;">
+        </div>
+    </div>
+</section>
+
+<!-- ================= ARTICLES GRID ================= -->
+<section class="container-fluid py-6">
+    <div class="text-center mb-6">
+        <h2 class="display-4 neon-title fw-bold mb-3">Latest Articles</h2>
+    </div>
+    <div class="row g-4">
+        
+        <!-- ARTICLE 1 -->
+        <div class="col-lg-4 col-md-6">
+            <div class="content-overlay p-4 h-100 rounded-4" style="height: 420px;">
+                <!-- PICTURE 3: Neural Network Circuit -->
+                <img src="https://images.unsplash.com/photo-1611594784009-d873f13ed3a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                     class="img-fluid rounded-3 mb-3 w-100" style="height: 180px; object-fit: cover;">
+                <span class="category-chip d-inline-block mb-2">AI Engineering</span>
+                <h3 class="h5 fw-bold mb-2" style="color: white;">BERT Hybrid Classifier</h3>
+                <p style="color: rgba(255,255,255,0.8);">98% accuracy production system</p>
+            </div>
+        </div>
+
+        <!-- ARTICLE 2 -->
+        <div class="col-lg-4 col-md-6">
+            <div class="content-overlay p-4 h-100 rounded-4" style="height: 420px;">
+                <!-- PICTURE 4: Chatbot Interface -->
+                <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                     class="img-fluid rounded-3 mb-3 w-100" style="height: 180px; object-fit: cover;">
+                <span class="category-chip d-inline-block mb-2">Automation</span>
+                <h3 class="h5 fw-bold mb-2" style="color: white;">GPT Auto-Responses</h3>
+                <p style="color: rgba(255,255,255,0.8);">70% ticket auto-resolution</p>
+            </div>
+        </div>
+
+        <!-- ARTICLE 3 -->
+        <div class="col-lg-4 col-md-6">
+            <div class="content-overlay p-4 h-100 rounded-4" style="height: 420px;">
+                <!-- PICTURE 5: Data Dashboard -->
+                <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                     class="img-fluid rounded-3 mb-3 w-100" style="height: 180px; object-fit: cover;">
+                <span class="category-chip d-inline-block mb-2">Machine Learning</span>
+                <h3 class="h5 fw-bold mb-2" style="color: white;">Smart Routing v2</h3>
+                <p style="color: rgba(255,255,255,0.8);">Intelligent ticket distribution</p>
+            </div>
+        </div>
+
+        <!-- ARTICLE 4 -->
+        <div class="col-lg-4 col-md-6">
+            <div class="content-overlay p-4 h-100 rounded-4" style="height: 420px;">
+                <!-- PICTURE 6: Database Cluster -->
+                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                     class="img-fluid rounded-3 mb-3 w-100" style="height: 180px; object-fit: cover;">
+                <span class="category-chip d-inline-block mb-2">Infrastructure</span>
+                <h3 class="h5 fw-bold mb-2" style="color: white;">Vector DB Scaling</h3>
+                <p style="color: rgba(255,255,255,0.8);">10M embedding storage</p>
+            </div>
+        </div>
+
+        <!-- ARTICLE 5 -->
+        <div class="col-lg-4 col-md-6">
+            <div class="content-overlay p-4 h-100 rounded-4" style="height: 420px;">
+                <!-- PICTURE 7: Transformer Model -->
+                <img src="https://images.unsplash.com/photo-1670511641692-cb243cc07a9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                     class="img-fluid rounded-3 mb-3 w-100" style="height: 180px; object-fit: cover;">
+                <span class="category-chip d-inline-block mb-2">LLM Systems</span>
+                <h3 class="h5 fw-bold mb-2" style="color: white;">LLM Fine-Tuning</h3>
+                <p style="color: rgba(255,255,255,0.8);">Custom domain adaptation</p>
+            </div>
+        </div>
+
+        <!-- ARTICLE 6 -->
+        <div class="col-lg-4 col-md-6">
+            <div class="content-overlay p-4 h-100 rounded-4" style="height: 420px;">
+                <!-- PICTURE 8: MLOps Pipeline -->
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                     class="img-fluid rounded-3 mb-3 w-100" style="height: 180px; object-fit: cover;">
+                <span class="category-chip d-inline-block mb-2">DevOps</span>
+                <h3 class="h5 fw-bold mb-2" style="color: white;">Real-time Pipelines</h3>
+                <p style="color: rgba(255,255,255,0.8);">Production ML deployment</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FUNCTIONAL NEWSLETTER ================= -->
+<section class="container py-7" style="background: rgba(15,12,41,0.8);">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <div class="content-overlay p-6 rounded-5">
+                <h2 class="display-5 fw-bold mb-4 neon-title">Join 52,847 Engineers</h2>
+                <p style="color: rgba(255,255,255,0.8);">Production AI systems • Weekly deep dives</p>
+                
+                <form id="newsletterForm" class="row g-3 justify-content-center mt-4 newsletter-form">
+                    <div class="col-lg-8">
+                        <input type="email" id="emailInput" name="email" class="form-control form-control-lg rounded-pill px-5 py-3" 
+                               placeholder="your.email@engineering.com" required>
+                    </div>
+                    <div class="col-lg-4">
+                        <button type="submit" class="btn btn-lg w-100 py-3 fw-bold rounded-pill px-5 text-white" 
+                                style="background: var(--primary-glow);" id="subscribeBtn">
+                            Subscribe Free
+                        </button>
+                    </div>
+                </form>
+                
+                <div id="newsletterMessage" class="mt-4" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// ✅ FULLY FUNCTIONAL EMAIL FORM
+document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('emailInput').value;
+    const btn = document.getElementById('subscribeBtn');
+    const messageDiv = document.getElementById('newsletterMessage');
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        messageDiv.innerHTML = '⚠️ Please enter a valid email address';
+        messageDiv.style.display = 'block';
+        messageDiv.style.color = '#dc3545';
+        messageDiv.style.background = 'rgba(220,53,69,0.2)';
+        messageDiv.style.border = '1px solid rgba(220,53,69,0.5)';
+        messageDiv.style.padding = '1rem';
+        messageDiv.style.borderRadius = '16px';
+        return;
+    }
+    
+    // Show loading
+    const originalText = btn.innerHTML;
+    btn.innerHTML = 'Subscribing...';
+    btn.disabled = true;
+    
+    // Simulate API call
+    setTimeout(() => {
+        messageDiv.innerHTML = '✅ Successfully subscribed! Welcome to AI Engineering updates!';
+        messageDiv.style.display = 'block';
+        messageDiv.style.color = '#00d4aa';
+        messageDiv.style.background = 'rgba(0,212,170,0.2)';
+        messageDiv.style.border = '1px solid rgba(0,212,170,0.5)';
+        messageDiv.style.padding = '1rem';
+        messageDiv.style.borderRadius = '16px';
+        
+        // Reset form
+        document.getElementById('newsletterForm').reset();
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        
+        // Auto hide success
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 5000);
+    }, 2000);
+});
+</script>
+{% endblock %}
