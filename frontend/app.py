@@ -1,4 +1,4 @@
- from flask import Flask, render_template, redirect, url_for, flash, request, jsonify, Response
+from flask import Flask, render_template, redirect, url_for, flash, request, jsonify, Response
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_bcrypt import Bcrypt
 from functools import wraps
