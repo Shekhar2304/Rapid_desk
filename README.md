@@ -61,7 +61,8 @@ cp .env.example .env
 # Edit .env with your SECRET_KEY
 
 # 5. Run production server
-python run.py
+python app.py
+
 
 
 
