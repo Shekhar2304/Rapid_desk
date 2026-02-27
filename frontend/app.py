@@ -973,10 +973,10 @@ with app.app_context():
             role='admin',
             is_active=True
         )
-        admin_user.set_password('admin123')
+        admin_user.set_password('password')
         db.session.add(admin_user)
         db.session.commit()
-        print(f"✅ Admin created: [admin@aitickets.com](mailto:admin@aitickets.com) / admin123 (Created: {format_ist_time(current_time)})")
+        print(f"✅ Admin created: [admin@aitickets.com](mailto:admin@aitickets.com) / password (Created: {format_ist_time(current_time)})")
     else:
         print(f"✅ Admin exists (Checked: {format_ist_time(current_time)})")
 
