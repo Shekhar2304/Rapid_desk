@@ -1,6 +1,6 @@
 ﻿# Rapid_desk
 <div align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=FF6B6B&center=true&vCenter=true&width=600&lines=RapidDesk+AI:+Enterprise+Ticket+Automation;AI-Powered+Ticket+Classification;10x+Faster+Resolution;Zero-Trust+Security+Certified;Built+by+Shekhar+Sourav;Jamshedpur%2C+Jharkhand+%F0%9F%87%AE%F0%9F%87%B3" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=FF6B6B&center=true&vCenter=true&width=600&lines=RapidDesk+AI:+Enterprise+Ticket+Automation;AI-Powered+Ticket+Classification;10x+Faster+Resolution;Zero-Trust+Security+Certified;Built+by+Shekhar+Sourav;Ranchi%2C+Jharkhand+%F0%9F%87%AE%F0%9F%87%B3" alt="Typing SVG" />
 </div>
 
 # 🚀 RapidDesk AI
@@ -62,5 +62,6 @@ cp .env.example .env
 
 # 5. Run production server
 python run.py
+
 
 
