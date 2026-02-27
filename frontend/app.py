@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash, request, jsonify, Response
+ from flask import Flask, render_template, redirect, url_for, flash, request, jsonify, Response
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_bcrypt import Bcrypt
 from functools import wraps
@@ -984,7 +984,7 @@ with app.app_context():
 if __name__ == '__main__':
     startup_time = get_current_ist_time()
     print(f"🚀 AI Ticket System starting up at {format_ist_time(startup_time)}")
-    print("📧 Admin Login: [admin@aitickets.com](mailto:admin@aitickets.com) / admin123")
+    print("📧 Admin Login: [admin@aitickets.com](mailto:admin@aitickets.com) / password")
     print("🌐 Server running on http://0.0.0.0:5000")
     print("✅ ALL TIMESTAMPS NOW SHOW CURRENT IST TIME!")
     print("✅ CSV EXPORT NOW WORKS PERFECTLY! 🎉")
